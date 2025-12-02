@@ -87,23 +87,23 @@ npm run dev
 
 ### Folder Structure 
 
-├── src/
-│   ├── api/
-│   │   └── dataService.js     # Contains fetchDummyData function for data fetching
-│   ├── components/
-│   │   ├── Cards.js           # Displays individual metrics
-│   │   ├── LineChart.js       # Renders a line chart for leads over time
-│   │   ├── PieChart.js        # Renders a pie chart for department distribution
-│   │   └── TimeSelector.js    # Allows selection of different time ranges
-│   ├── Pages/
-│   │   └── Dashboard.jsx      # Main dashboard component that integrates charts and cards
-│   ├── App.js                 # Main App component
-│   ├── index.js               # Entry point of the React application
-├── public/
-│   └── index.html             # HTML template
-├── .env                       # Environment file for API configuration
-├── package.json               # Project metadata and dependencies
-└── README.md                  # Documentation
+- ├── src/
+- │   ├── api/
+- │   │   └── dataService.js     # Contains fetchDummyData function for data fetching
+- │   ├── components/
+- │   │   ├── Cards.js           # Displays individual metrics
+- │   │   ├── LineChart.js       # Renders a line chart for leads over time
+- │   │   ├── PieChart.js        # Renders a pie chart for department distribution
+- │   │   └── TimeSelector.js    # Allows selection of different time ranges
+- │   ├── Pages/
+- │   │   └── Dashboard.jsx      # Main dashboard component that integrates charts and cards
+- │   ├── App.js                 # Main App component
+- │   ├── index.js               # Entry point of the React application
+- ├── public/
+- │   └── index.html             # HTML template
+- ├── .env                       # Environment file for API configuration
+- ├── package.json               # Project metadata and dependencies
+- └── README.md                  # Documentation
 
 
 
