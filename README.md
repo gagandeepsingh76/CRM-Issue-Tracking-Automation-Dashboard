@@ -106,5 +106,8 @@ npm run dev
 - └── README.md                  # Documentation
 
 
+<img width="910" height="623" alt="image" src="https://github.com/user-attachments/assets/44386b7a-4b15-4a62-a27b-1fe578923628" />
+
+
 
    
