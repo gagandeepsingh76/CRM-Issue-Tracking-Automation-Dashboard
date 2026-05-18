@@ -35,6 +35,7 @@ app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(sanitizeRequest);
 
+app.get('/', healthController.root);
 app.get('/health', asyncHandler(healthController.ready));
 app.get('/ready', asyncHandler(healthController.ready));
 app.get('/live', healthController.live);
