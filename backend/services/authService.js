@@ -41,7 +41,7 @@ export const authService = {
         email: payload.email,
         phone: payload.phone,
         password: await hashPassword(payload.password),
-        role: 'EMPLOYEE',
+        role: payload.role,
       },
       select: publicUserSelect,
     });
