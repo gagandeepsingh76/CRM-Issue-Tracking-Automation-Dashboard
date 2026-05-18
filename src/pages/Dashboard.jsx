@@ -63,22 +63,24 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="container mx-auto">
-        <div className="flex justify-between items-center mb-6">
+    <div className="space-y-6">
+      <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-2xl font-bold">CRM Dashboard</h1>
           <TimeSelector onSelectTime={handleTimeSelect} />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <Cards title="Total Users" value={data.totalUsers} />
-          <Cards title="New Leads" value={data.newLeads} />
-          <Cards title="Closed Deals" value={data.closedDeals} />
-          <Cards title="Open Tickets" value={data.openTickets} />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <PieChart key={selectedTime + "-pie"} data={data.pieData} />
-          <LineChart key={selectedTime + "-line"} data={data.lineData} />
-        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <Cards title="Total Users" value={data.totalUsers} />
+        <Cards title="New Leads" value={data.newLeads} />
+        <Cards title="Closed Deals" value={data.closedDeals} />
+        <Cards title="Open Tickets" value={data.openTickets} />
+      </div>
+
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <PieChart key={selectedTime + "-pie"} data={data.pieData} />
+        <LineChart key={selectedTime + "-line"} data={data.lineData} />
       </div>
     </div>
   );
