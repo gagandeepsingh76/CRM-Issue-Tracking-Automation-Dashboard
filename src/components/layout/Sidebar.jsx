@@ -2,16 +2,30 @@ import PropTypes from "prop-types";
 import { Link, NavLink } from "react-router-dom";
 import { ROUTES } from "../../routes/paths";
 import { protectedRoutes } from "../../routes/routeConfig";
+import { useAuthStore } from "../../store/authStore";
+import { canAccessRoute } from "../../utils/roles";
 
 const navLinkClasses = ({ isActive }) =>
   [
-    "flex items-center rounded-md px-3 py-2 text-sm font-medium transition",
+    "flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition",
     isActive
       ? "bg-blue-600 text-white shadow-sm"
-      : "text-gray-700 hover:bg-gray-100 hover:text-gray-950",
+      : "text-gray-600 hover:bg-gray-100 hover:text-gray-950",
   ].join(" ");
 
 const SidebarContent = ({ onClose }) => {
+  const user = useAuthStore((state) => state.user);
+  const visibleRoutes = protectedRoutes.filter((route) =>
+    canAccessRoute(user?.role, route.allowedRoles),
+  );
+  const groupedRoutes = visibleRoutes.reduce((groups, route) => {
+    const groupName = route.group ?? "Workspace";
+    return {
+      ...groups,
+      [groupName]: [...(groups[groupName] ?? []), route],
+    };
+  }, {});
+
   return (
     <div className="flex h-full flex-col border-r border-gray-200 bg-white">
       <div className="flex h-16 items-center justify-between px-5">
@@ -32,17 +46,29 @@ const SidebarContent = ({ onClose }) => {
         </button>
       </div>
 
-      <nav className="flex-1 space-y-1 px-3 py-4">
-        {protectedRoutes.map((route) => (
-          <NavLink
-            key={route.path}
-            to={route.path}
-            className={navLinkClasses}
-            onClick={onClose}
-          >
-            {route.navLabel}
-          </NavLink>
-        ))}
+      <nav className="flex-1 overflow-y-auto px-3 py-4">
+        <div className="space-y-5">
+          {Object.entries(groupedRoutes).map(([groupName, routes]) => (
+            <div key={groupName}>
+              <p className="px-3 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                {groupName}
+              </p>
+              <div className="mt-2 space-y-1">
+                {routes.map((route) => (
+                  <NavLink
+                    key={route.path}
+                    to={route.path}
+                    className={navLinkClasses}
+                    onClick={onClose}
+                  >
+                    <span>{route.navLabel}</span>
+                    <span className="text-xs opacity-60">/</span>
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </nav>
 
       <div className="border-t border-gray-200 p-4">
@@ -50,7 +76,7 @@ const SidebarContent = ({ onClose }) => {
           Current role
         </p>
         <p className="mt-1 text-sm font-semibold text-gray-900">
-          Admin preview
+          {user?.role}
         </p>
       </div>
     </div>
@@ -76,7 +102,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             className="absolute inset-0 bg-gray-950/40"
             onClick={onClose}
           />
-          <aside className="relative h-full w-72 max-w-[85vw]">
+          <aside className="relative h-full w-72 max-w-[85vw] animate-sidebar-enter">
             <SidebarContent onClose={onClose} />
           </aside>
         </div>

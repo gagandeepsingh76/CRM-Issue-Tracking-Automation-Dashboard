@@ -1,9 +1,9 @@
-import axios from "axios";
-import { url } from "../api/api";
+import { dashboardMockUrl } from "../api/api";
+import { httpClient } from "../api/httpClient";
 
 export const fetchDummyData = async (timeRange) => {
     try {
-      const response = await axios.get(url);
+      const response = await httpClient.get(dashboardMockUrl);
       const data = response.data;
   
       if (timeRange === "1 Day") return data["1day"];

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Cards from "../components/Cards";
+import LoadingPlaceholder from "../components/common/LoadingPlaceholder";
 import PieChart from "../components/PieChart";
 import LineChart from "../components/LineChart";
 import TimeSelector from "../components/TimeSelector";
@@ -42,20 +43,33 @@ const loadDashboardData = async (timeRange) => {
 const Dashboard = () => {
   const [selectedTime, setSelectedTime] = useState(DEFAULT_TIME_RANGE);
   const [data, setData] = useState(DEFAULT_DASHBOARD_DATA);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleTimeSelect = async (timeRange) => {
     setSelectedTime(timeRange);
-    setData(await loadDashboardData(timeRange));
+    setIsLoading(true);
+
+    try {
+      setData(await loadDashboardData(timeRange));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
     let isMounted = true;
 
-    loadDashboardData(DEFAULT_TIME_RANGE).then((dashboardData) => {
-      if (isMounted) {
-        setData(dashboardData);
-      }
-    });
+    loadDashboardData(DEFAULT_TIME_RANGE)
+      .then((dashboardData) => {
+        if (isMounted) {
+          setData(dashboardData);
+        }
+      })
+      .finally(() => {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      });
 
     return () => {
       isMounted = false;
@@ -71,17 +85,23 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Cards title="Total Users" value={data.totalUsers} />
-        <Cards title="New Leads" value={data.newLeads} />
-        <Cards title="Closed Deals" value={data.closedDeals} />
-        <Cards title="Open Tickets" value={data.openTickets} />
-      </div>
+      {isLoading ? (
+        <LoadingPlaceholder label="Refreshing dashboard metrics..." />
+      ) : (
+        <>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Cards title="Total Users" value={data.totalUsers} />
+            <Cards title="New Leads" value={data.newLeads} />
+            <Cards title="Closed Deals" value={data.closedDeals} />
+            <Cards title="Open Tickets" value={data.openTickets} />
+          </div>
 
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        <PieChart key={selectedTime + "-pie"} data={data.pieData} />
-        <LineChart key={selectedTime + "-line"} data={data.lineData} />
-      </div>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            <PieChart key={selectedTime + "-pie"} data={data.pieData} />
+            <LineChart key={selectedTime + "-line"} data={data.lineData} />
+          </div>
+        </>
+      )}
     </div>
   );
 };

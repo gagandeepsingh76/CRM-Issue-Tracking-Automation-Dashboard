@@ -1,12 +1,17 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import PageTransition from "../components/common/PageTransition";
 
 const PublicLayout = () => {
+  const location = useLocation();
+
   return (
     <main className="min-h-screen bg-gray-100">
       <div className="grid min-h-screen lg:grid-cols-[1.1fr_0.9fr]">
         <section className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
           <div className="w-full max-w-md">
-            <Outlet />
+            <PageTransition key={location.pathname}>
+              <Outlet />
+            </PageTransition>
           </div>
         </section>
 
