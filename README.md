@@ -1,84 +1,222 @@
-# CRM Suite
+# CRM Issue Tracking Automation Dashboard
 
-Production-ready CRM SaaS dashboard with a React/Vite frontend, Express API, Prisma ORM, PostgreSQL, JWT authentication, role-based routing, analytics, notifications, and CRUD workflows for customers, leads, deals, and tickets.
+A production-ready enterprise CRM & Issue Tracking platform built using React, Node.js, Express.js, Prisma ORM, and Neon PostgreSQL.
 
-## Stack
+This platform enables Admins, Managers, and Employees to collaboratively manage customers, leads, deals, support tickets, analytics, and organizational workflows in a secure and scalable environment.
 
-- Frontend: React 18, Vite, Tailwind CSS, Zustand, Axios, Chart.js
-- Backend: Node.js, Express, Prisma, PostgreSQL, JWT, Zod
-- Testing: Vitest, Testing Library, Node test runner, Supertest
-- Deployment: Vercel frontend, Railway or Render backend, Neon PostgreSQL
+---
 
-## Local Setup
+# Live Demo
 
-```sh
-npm install
-npm --prefix backend install
-```
+## Live Application
 
-Create environment files from the examples:
+https://crm-issue-tracking-automation-dashb.vercel.app
 
-```sh
-copy .env.example .env
-copy backend\.env.example backend\.env
-```
+## Backend API
 
-Start PostgreSQL with Docker from the backend folder or use an existing local Postgres instance:
+https://crm-dashboard-backend-production-10a8.up.railway.app
 
-```sh
-cd backend
-docker compose up -d
-npm run prisma:generate
-npm run prisma:migrate
-npm run prisma:seed
-```
+## Health Endpoint
 
-Start the apps:
+https://crm-dashboard-backend-production-10a8.up.railway.app/health
 
-```sh
-npm run backend:dev
-npm run dev
-```
+## GitHub Repository
 
-Default local URLs:
+https://github.com/gagandeepsingh76/CRM-Issue-Tracking-Automation-Dashboard
 
-- Frontend: `http://localhost:5173`
-- Backend: `http://localhost:5000`
-- API base: `http://localhost:5000/api/v1`
-- API docs: `http://localhost:5000/api/docs`
-- Health: `http://localhost:5000/health`
+---
 
-Demo credentials after local seed:
+# System Architecture
 
-- `admin@crm.local` / `Password@123`
-- `manager@crm.local` / `Password@123`
-- `employee@crm.local` / `Password@123`
+<p align="center">
+  <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/4d12a00b-5560-40bc-8304-acd53cbc2ebd" />
+</p>
 
-## Quality Checks
+---
 
-```sh
-npm run lint
-npm run test
-npm run build
-npm --prefix backend run lint
-npm --prefix backend run prisma:validate
-npm --prefix backend test
-```
+# Application Interface
 
-Backend integration tests require a reachable PostgreSQL database and valid `DATABASE_URL`/`DIRECT_URL`.
+## Login Interface
 
-## Production Features
+<p align="center">
+ <img width="1365" height="632" alt="image" src="https://github.com/user-attachments/assets/7dbb937b-e91b-4839-9254-cc6084788f8c" />
+</p>
 
-- Route-level lazy loading and Suspense fallbacks
-- Production bundle chunking for React, charts, and app code
-- Persisted JWT auth with auto-refresh and logout on `401`
-- Dark mode with system-aware initial preference
-- Dynamic page titles and meta descriptions
-- Accessible skip links, modal semantics, focus states, and responsive module layouts
-- Helmet, compression, rate limiting, CORS allow-list, request sanitization, request IDs, and structured error logs
-- Readiness/liveness endpoints and OpenAPI documentation structure
-- GitHub Actions quality gate for frontend, backend, Prisma, and integration tests
+---
 
-## Deployment
+## CRM Dashboard
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for the Vercel, Railway/Render, and Neon production flow.
+<p align="center">
+<img width="1365" height="632" alt="image" src="https://github.com/user-attachments/assets/dc52bd3e-3f72-4889-9949-13b4456014f9" />
+</p>
+
+---
+
+## Customer Management
+
+<p align="center">
+  <img width="1365" height="630" alt="image" src="https://github.com/user-attachments/assets/75b7912a-8dcb-4295-b152-8a839602001c" />
+</p>
+
+---
+
+## Ticket Management
+
+<p align="center">
+<img width="1365" height="635" alt="image" src="https://github.com/user-attachments/assets/55efaf18-c3e5-4dad-8014-1ceab69fad21" />
+</p>
+
+---
+
+# Key Features
+
+## Role-Based Access Control (RBAC)
+
+- Admin Portal
+- Manager Portal
+- Employee Portal
+- Protected Routes
+- JWT Authentication
+- Role-Based API Authorization
+
+---
+
+## CRM Management
+
+- Customer Management
+- Lead Tracking
+- Deal Management
+- Sales Pipeline Monitoring
+- Customer Portfolio Tracking
+
+---
+
+## Ticket & Support System
+
+- Ticket Creation
+- Priority Tracking
+- Ticket Status Management
+- Support Workflow
+- Issue Resolution Monitoring
+
+---
+
+## Dashboard & Analytics
+
+- CRM Dashboard
+- Customer Analytics
+- Ticket Priority Insights
+- Deal Pipeline Visualization
+- Performance Monitoring
+
+---
+
+## Security & Authentication
+
+- JWT Authentication
+- Secure Password Hashing
+- Protected Backend APIs
+- Production-ready CORS Handling
+- Prisma ORM Security Layer
+
+---
+
+## Deployment & DevOps
+
+- GitHub CI/CD Workflow
+- Railway Backend Deployment
+- Vercel Frontend Deployment
+- Neon PostgreSQL Integration
+- Environment-based Configuration
+
+---
+
+# Technology Stack
+
+| Technology | Purpose |
+|---|---|
+| React.js | Frontend Framework |
+| Vite | Frontend Build Tool |
+| Tailwind CSS | UI Styling |
+| Node.js | Backend Runtime |
+| Express.js | Backend Framework |
+| Prisma ORM | Database ORM |
+| Neon PostgreSQL | Cloud Database |
+| JWT | Authentication |
+| Railway | Backend Deployment |
+| Vercel | Frontend Deployment |
+
+---
+
+# Project Architecture
+
+## Frontend (Vercel)
+
+- React.js
+- Tailwind CSS
+- Axios API Integration
+- Protected Routes
+- Dark/Light Theme
+
+---
+
+## Backend (Railway)
+
+- Express.js REST APIs
+- JWT Authentication
+- Role-Based Authorization
+- Prisma ORM
+- Request Validation
+- Global Error Handling
+
+---
+
+## Database (Neon PostgreSQL)
+
+### Models
+
+- User
+- Customer
+- Lead
+- Deal
+- Ticket
+- Employee
+
+---
+
+# Roles
+
+| Role | Access |
+|---|---|
+| ADMIN | Full Access |
+| MANAGER | Management Access |
+| EMPLOYEE | Standard Access |
+
+---
+
+# API Modules
+
+## Authentication APIs
+
+- Register
+- Login
+- JWT Session Handling
+
+---
+
+## CRM APIs
+
+- Customers CRUD
+- Leads CRUD
+- Deals CRUD
+- Tickets CRUD
+- Employees CRUD
+
+---
+
+# Environment Variables
+
+## Frontend (.env)
+
+```env
+VITE_API_BASE_URL=https://crm-dashboard-backend-production-10a8.up.railway.app/api/v1
