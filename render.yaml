@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: crm-dashboard-backend
+    runtime: node
+    rootDir: backend
+    plan: starter
+    buildCommand: npm ci && npm run prisma:generate
+    startCommand: npm run prisma:deploy && npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "true"
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false

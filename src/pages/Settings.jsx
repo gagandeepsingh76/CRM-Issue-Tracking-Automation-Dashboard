@@ -4,7 +4,7 @@ const Settings = () => {
   return (
     <ModulePage
       title="Settings"
-      description="Prepare workspace-level preferences for notifications, roles, integrations, and deployment environment configuration."
+      description="Review workspace-level preferences for notifications, roles, integrations, and deployment environment configuration."
       actions={["Save settings"]}
       metrics={[
         { label: "Integrations", value: "4", helper: "Planned connectors" },
@@ -18,8 +18,8 @@ const Settings = () => {
           <div key={section} className="rounded-md border border-gray-200 p-4">
             <p className="font-semibold text-gray-950">{section}</p>
             <p className="mt-1 text-sm text-gray-500">
-              Configuration controls will be implemented after auth and API
-              foundations are available.
+              Production configuration is managed through environment variables
+              and deployment platform settings.
             </p>
           </div>
         ))}

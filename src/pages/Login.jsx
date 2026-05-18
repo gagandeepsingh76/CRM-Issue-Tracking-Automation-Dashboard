@@ -3,22 +3,22 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useToast } from "../hooks/useToast";
 import { ROUTES } from "../routes/paths";
 import { useAuthStore } from "../store/authStore";
-import { ALL_ROLES, AUTH_ROLES } from "../utils/roles";
+import { ALL_ROLES, AUTH_ROLES, formatRole } from "../utils/roles";
 
 const demoAccounts = [
   {
     label: "Admin",
-    email: "admin@crm.test",
+    email: "admin@crm.local",
     role: AUTH_ROLES.ADMIN,
   },
   {
     label: "Manager",
-    email: "manager@crm.test",
+    email: "manager@crm.local",
     role: AUTH_ROLES.MANAGER,
   },
   {
     label: "Employee",
-    email: "employee@crm.test",
+    email: "employee@crm.local",
     role: AUTH_ROLES.EMPLOYEE,
   },
 ];
@@ -39,15 +39,15 @@ const Login = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: "admin@crm.test",
-      password: "password123",
+      email: "admin@crm.local",
+      password: "Password@123",
       role: AUTH_ROLES.ADMIN,
     },
   });
 
   const selectDemoAccount = (account) => {
     setValue("email", account.email, { shouldValidate: true });
-    setValue("password", "password123", { shouldValidate: true });
+    setValue("password", "Password@123", { shouldValidate: true });
     setValue("role", account.role, { shouldValidate: true });
   };
 
@@ -71,8 +71,8 @@ const Login = () => {
           Login to CRM Suite
         </h1>
         <p className="mt-2 text-sm text-gray-600">
-          Use a demo role now. The same form will connect to the backend auth
-          API later.
+          Use one of the seeded backend accounts or any account registered
+          through the API.
         </p>
       </div>
 
@@ -132,8 +132,8 @@ const Login = () => {
             {...register("password", {
               required: "Password is required.",
               minLength: {
-                value: 6,
-                message: "Password must be at least 6 characters.",
+                value: 8,
+                message: "Password must be at least 8 characters.",
               },
             })}
           />
@@ -158,10 +158,13 @@ const Login = () => {
           >
             {ALL_ROLES.map((role) => (
               <option key={role} value={role}>
-                {role}
+                {formatRole(role)}
               </option>
             ))}
           </select>
+          <p className="mt-1 text-xs text-gray-500">
+            Backend permissions come from the authenticated user record.
+          </p>
         </div>
 
         {authError ? (

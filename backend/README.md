@@ -11,6 +11,7 @@ Production-style Node.js, Express, Prisma, and PostgreSQL API for the CRM dashbo
 - JWT authentication
 - bcrypt password hashing
 - Zod request validation
+- Helmet, compression, rate limiting, CORS allow-listing, request sanitization
 
 ## Setup
 
@@ -54,10 +55,13 @@ Demo users are created with password `Password@123`:
 npm run dev
 ```
 
-Health check:
+Health and docs:
 
 ```text
 GET http://localhost:5000/health
+GET http://localhost:5000/live
+GET http://localhost:5000/ready
+GET http://localhost:5000/api/docs
 ```
 
 ## API Base
@@ -124,6 +128,13 @@ GET http://localhost:5000/health
 - `GET /api/v1/analytics/pipeline`
 - `GET /api/v1/analytics/tickets`
 
+### Notifications and users
+
+- `GET /api/v1/notifications`
+- `PATCH /api/v1/notifications/:id/read`
+- `PATCH /api/v1/notifications/read-all`
+- `GET /api/v1/users`
+
 ## Response Format
 
 Success:
@@ -148,10 +159,14 @@ Error:
 {
   "success": false,
   "message": "Request validation failed.",
+  "requestId": "d5cbb0f0-5c34-4566-a2bd-e109afd9d4b7",
   "errors": []
 }
 ```
 
-## Frontend Integration Plan
+## Production Notes
 
-The current frontend mock auth remains untouched. In the next phase, the frontend can switch service-by-service by pointing Axios to `VITE_API_BASE_URL=http://localhost:5000/api/v1`, then replacing mock auth/data calls with these REST endpoints.
+- Set `TRUST_PROXY=true` behind Railway, Render, or any proxy.
+- Set `CORS_ORIGIN` to the deployed Vercel URL. Wildcards are for local experiments only.
+- Use Neon pooled `DATABASE_URL` for app traffic and direct `DIRECT_URL` for Prisma migrations.
+- Run `npm run prisma:seed:prod` only with `ALLOW_PRODUCTION_SEED=true`; it creates or updates the first admin and never resets data.

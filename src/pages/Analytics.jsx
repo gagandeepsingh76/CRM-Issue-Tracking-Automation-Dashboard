@@ -1,27 +1,125 @@
+import { useCallback, useEffect } from "react";
+import ErrorState from "../components/common/ErrorState";
+import LoadingPlaceholder from "../components/common/LoadingPlaceholder";
 import ModulePage from "../components/common/ModulePage";
+import { useCrmStore } from "../store/crmStore";
+import { formatCurrency, formatEnum, formatPercent } from "../utils/crmFormat";
 
 const Analytics = () => {
+  const dashboard = useCrmStore((state) => state.dashboard);
+  const pipelineAnalytics = useCrmStore((state) => state.pipelineAnalytics);
+  const ticketAnalytics = useCrmStore((state) => state.ticketAnalytics);
+  const loadDashboardSummary = useCrmStore((state) => state.loadDashboardSummary);
+  const loadPipelineAnalytics = useCrmStore(
+    (state) => state.loadPipelineAnalytics,
+  );
+  const loadTicketAnalytics = useCrmStore((state) => state.loadTicketAnalytics);
+  const isLoading =
+    dashboard.status === "loading" ||
+    pipelineAnalytics.status === "loading" ||
+    ticketAnalytics.status === "loading";
+  const error =
+    dashboard.error ?? pipelineAnalytics.error ?? ticketAnalytics.error ?? "";
+  const metrics = dashboard.data?.metrics ?? {};
+  const pipeline = pipelineAnalytics.data ?? [];
+  const totalDeals = pipeline.reduce((sum, stage) => sum + stage.count, 0);
+  const wonDeals = pipeline.find((stage) => stage.stage === "WON")?.count ?? 0;
+  const winRate = totalDeals ? (wonDeals / totalDeals) * 100 : 0;
+  const maxPipelineValue = Math.max(
+    ...pipeline.map((stage) => Number(stage.value ?? 0)),
+    1,
+  );
+
+  const loadAnalytics = useCallback(() => {
+    Promise.all([
+      loadDashboardSummary(),
+      loadPipelineAnalytics(),
+      loadTicketAnalytics(),
+    ]).catch(() => {
+      // Error state is rendered from the store.
+    });
+  }, [loadDashboardSummary, loadPipelineAnalytics, loadTicketAnalytics]);
+
+  useEffect(() => {
+    loadAnalytics();
+  }, [loadAnalytics]);
+
   return (
     <ModulePage
       title="Analytics"
-      description="Expand the current dashboard into revenue, conversion, support, and team performance analytics backed by real APIs."
-      actions={["Export", "Schedule report"]}
+      description="Revenue, conversion, support, and pipeline performance analytics backed by the PostgreSQL CRM data."
+      actions={[{ label: "Refresh", onClick: loadAnalytics, disabled: isLoading }]}
       metrics={[
-        { label: "Revenue", value: "$86K", helper: "Mock monthly total" },
-        { label: "Lead conversion", value: "28%", helper: "Mock funnel rate" },
-        { label: "Ticket load", value: "37", helper: "Currently open" },
-        { label: "Win rate", value: "41%", helper: "Mock deal close rate" },
+        {
+          label: "Won revenue",
+          value: formatCurrency(metrics.wonRevenue),
+          helper: "Closed-won deals",
+        },
+        {
+          label: "Open leads",
+          value: metrics.openLeads ?? 0,
+          helper: "Active funnel",
+        },
+        {
+          label: "Ticket load",
+          value: metrics.openTickets ?? 0,
+          helper: "Open and in progress",
+        },
+        {
+          label: "Win rate",
+          value: formatPercent(winRate),
+          helper: "Won deals by pipeline count",
+        },
       ]}
     >
-      <div className="flex h-56 items-end gap-3 rounded-md bg-gray-50 p-4">
-        {[35, 55, 42, 78, 64, 88, 72].map((height, index) => (
-          <div
-            key={height + index}
-            className="flex flex-1 items-end rounded-t bg-blue-600"
-            style={{ height: `${height}%` }}
-          />
-        ))}
-      </div>
+      {isLoading ? (
+        <LoadingPlaceholder label="Loading analytics from the database..." />
+      ) : error ? (
+        <ErrorState message={error} onRetry={loadAnalytics} />
+      ) : (
+        <div className="space-y-6">
+          <div className="flex h-64 items-end gap-3 rounded-md bg-gray-50 p-4">
+            {pipeline.map((stage) => {
+              const height = Math.max(
+                (Number(stage.value ?? 0) / maxPipelineValue) * 100,
+                8,
+              );
+
+              return (
+                <div
+                  key={stage.stage}
+                  className="flex flex-1 flex-col items-center justify-end gap-2"
+                >
+                  <div
+                    className="w-full rounded-t bg-blue-600"
+                    style={{ height: `${height}%` }}
+                    title={`${formatEnum(stage.stage)} ${formatCurrency(stage.value)}`}
+                  />
+                  <span className="text-center text-xs font-medium text-gray-500">
+                    {formatEnum(stage.stage)}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-2">
+            {(ticketAnalytics.data?.byPriority ?? []).map((priority) => (
+              <div
+                key={priority.label}
+                className="rounded-md border border-gray-200 p-4"
+              >
+                <p className="text-sm font-medium text-gray-500">
+                  {formatEnum(priority.label)}
+                </p>
+                <p className="mt-2 text-2xl font-bold text-gray-950">
+                  {priority.count}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </ModulePage>
   );
 };

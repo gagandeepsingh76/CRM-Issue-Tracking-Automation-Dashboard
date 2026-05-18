@@ -18,5 +18,14 @@ const shutdown = async (signal) => {
   });
 };
 
+process.on('unhandledRejection', (reason) => {
+  logger.error('Unhandled promise rejection', { reason });
+});
+
+process.on('uncaughtException', (error) => {
+  logger.error('Uncaught exception', { stack: error.stack, message: error.message });
+  process.exit(1);
+});
+
 process.on('SIGTERM', () => shutdown('SIGTERM'));
 process.on('SIGINT', () => shutdown('SIGINT'));

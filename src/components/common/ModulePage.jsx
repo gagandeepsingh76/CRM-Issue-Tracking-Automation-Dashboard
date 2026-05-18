@@ -1,6 +1,9 @@
 import PropTypes from "prop-types";
 
 const ModulePage = ({ title, description, metrics, actions, children }) => {
+  const normalizeAction = (action) =>
+    typeof action === "string" ? { label: action } : action;
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -15,16 +18,22 @@ const ModulePage = ({ title, description, metrics, actions, children }) => {
         </div>
 
         {actions.length ? (
-          <div className="flex flex-wrap gap-2">
-            {actions.map((action) => (
-              <button
-                key={action}
-                type="button"
-                className="rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
-              >
-                {action}
-              </button>
-            ))}
+          <div className="grid gap-2 sm:flex sm:flex-wrap sm:justify-end">
+            {actions.map((action) => {
+              const normalizedAction = normalizeAction(action);
+
+              return (
+                <button
+                  key={normalizedAction.label}
+                  type="button"
+                  className="rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-blue-500 dark:hover:bg-slate-800"
+                  onClick={normalizedAction.onClick}
+                  disabled={normalizedAction.disabled}
+                >
+                  {normalizedAction.label}
+                </button>
+              );
+            })}
           </div>
         ) : null}
       </div>
@@ -44,7 +53,10 @@ const ModulePage = ({ title, description, metrics, actions, children }) => {
         ))}
       </div>
 
-      <section className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+      <section
+        aria-label={`${title} workspace`}
+        className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-700 dark:bg-slate-900"
+      >
         {children}
       </section>
     </div>
@@ -57,11 +69,21 @@ ModulePage.propTypes = {
   metrics: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+        .isRequired,
       helper: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  actions: PropTypes.arrayOf(PropTypes.string),
+  actions: PropTypes.arrayOf(
+    PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.shape({
+        label: PropTypes.string.isRequired,
+        onClick: PropTypes.func,
+        disabled: PropTypes.bool,
+      }),
+    ]),
+  ),
   children: PropTypes.node.isRequired,
 };
 

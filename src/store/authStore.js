@@ -14,11 +14,42 @@ export const useAuthStore = create(
       user: null,
       token: null,
       hasHydrated: false,
+      isRestoringSession: false,
       ...initialRequestState,
 
       setHasHydrated: (hasHydrated) => set({ hasHydrated }),
       clearError: () => set({ error: null }),
       isAuthenticated: () => Boolean(get().user && get().token),
+
+      initializeSession: async () => {
+        const { token } = get();
+
+        if (!token) {
+          return null;
+        }
+
+        set({ isRestoringSession: true, error: null });
+
+        try {
+          const user = await authService.me();
+          set({
+            user,
+            status: "authenticated",
+            isRestoringSession: false,
+            error: null,
+          });
+          return user;
+        } catch {
+          set({
+            user: null,
+            token: null,
+            status: "idle",
+            error: null,
+            isRestoringSession: false,
+          });
+          return null;
+        }
+      },
 
       login: async (credentials) => {
         set({ status: "loading", error: null });
@@ -60,6 +91,7 @@ export const useAuthStore = create(
         set({
           user: null,
           token: null,
+          isRestoringSession: false,
           ...initialRequestState,
         });
       },
@@ -73,6 +105,7 @@ export const useAuthStore = create(
       }),
       onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
+        state?.initializeSession();
       },
     },
   ),

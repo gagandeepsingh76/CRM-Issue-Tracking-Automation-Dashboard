@@ -17,6 +17,7 @@ export const corsMiddleware = cors({
     callback(new Error(`CORS blocked origin: ${origin}`));
   },
   credentials: true,
+  maxAge: 86400,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 });

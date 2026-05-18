@@ -50,10 +50,14 @@ export const errorHandler = (error, req, res, next) => {
     message = mapped.message;
   }
 
-  logger.error(message, {
+  const logLevel = statusCode >= 500 ? 'error' : 'warn';
+
+  logger[logLevel](message, {
+    requestId: req.id,
     method: req.method,
     path: req.originalUrl,
     statusCode,
+    userId: req.user?.id,
     details,
     stack: env.nodeEnv === 'production' ? undefined : error.stack,
   });
@@ -61,6 +65,7 @@ export const errorHandler = (error, req, res, next) => {
   res.status(statusCode).json({
     success: false,
     message,
+    requestId: req.id,
     ...(details ? { errors: details } : {}),
     ...(env.nodeEnv === 'production' ? {} : { stack: error.stack }),
   });

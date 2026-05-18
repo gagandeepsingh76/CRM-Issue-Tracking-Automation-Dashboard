@@ -1,80 +1,85 @@
 import { useEffect, useState } from "react";
 import Cards from "../components/Cards";
+import ErrorState from "../components/common/ErrorState";
 import LoadingPlaceholder from "../components/common/LoadingPlaceholder";
 import PieChart from "../components/PieChart";
 import LineChart from "../components/LineChart";
 import TimeSelector from "../components/TimeSelector";
-import { fetchDummyData } from "../services/dataService";
+import { useCrmStore } from "../store/crmStore";
+import { formatEnum } from "../utils/crmFormat";
 
 const DEFAULT_TIME_RANGE = "1 Week";
 const DEFAULT_DASHBOARD_DATA = {
   totalUsers: 0,
-  newLeads: 0,
-  closedDeals: 0,
+  openLeads: 0,
+  wonDeals: 0,
   openTickets: 0,
-  pieData: [30, 50, 20],
-  lineData: [100, 200, 300, 400, 500],
+  pieData: [],
+  pieLabels: [],
+  lineData: [],
+  lineLabels: [],
 };
 
-const mapDashboardData = (fetchedData = {}) => {
-  const users = fetchedData.users ?? {};
-  const leads = fetchedData.leads ?? {};
-  const tickets = fetchedData.openTickets ?? {};
-  const totalUsers =
-    Number(users.active ?? 0) +
-    Number(users.inactive ?? 0) +
-    Number(users.new ?? 0);
+const getSeries = (rows = [], key = "label") => ({
+  labels: rows.map((row) => formatEnum(row[key])),
+  data: rows.map((row) => Number(row.count ?? 0)),
+});
+
+const mapDashboardData = (summary = {}) => {
+  const metrics = summary.metrics ?? {};
+  const ticketPrioritySeries = getSeries(summary.ticketPriorities);
+  const dealStageSeries = getSeries(summary.dealStages);
 
   return {
-    totalUsers,
-    newLeads: Number(leads.converted ?? 0),
-    closedDeals: Number(leads.lost ?? 0),
-    openTickets: Number(tickets.open ?? 0),
-    pieData: fetchedData.pieData ?? DEFAULT_DASHBOARD_DATA.pieData,
-    lineData: fetchedData.lineData ?? DEFAULT_DASHBOARD_DATA.lineData,
+    totalUsers: Number(metrics.totalUsers ?? 0),
+    openLeads: Number(metrics.openLeads ?? 0),
+    wonDeals: Number(metrics.wonDeals ?? 0),
+    openTickets: Number(metrics.openTickets ?? 0),
+    pieData: ticketPrioritySeries.data,
+    pieLabels: ticketPrioritySeries.labels,
+    lineData: dealStageSeries.data,
+    lineLabels: dealStageSeries.labels,
   };
-};
-
-const loadDashboardData = async (timeRange) => {
-  const fetchedData = await fetchDummyData(timeRange);
-  return mapDashboardData(fetchedData);
 };
 
 const Dashboard = () => {
   const [selectedTime, setSelectedTime] = useState(DEFAULT_TIME_RANGE);
   const [data, setData] = useState(DEFAULT_DASHBOARD_DATA);
-  const [isLoading, setIsLoading] = useState(true);
+  const dashboard = useCrmStore((state) => state.dashboard);
+  const loadDashboardSummary = useCrmStore((state) => state.loadDashboardSummary);
+  const isLoading = dashboard.status === "loading";
+
+  const loadDashboardData = async () => {
+    const summary = await loadDashboardSummary();
+    setData(mapDashboardData(summary));
+  };
 
   const handleTimeSelect = async (timeRange) => {
     setSelectedTime(timeRange);
-    setIsLoading(true);
 
     try {
-      setData(await loadDashboardData(timeRange));
-    } finally {
-      setIsLoading(false);
+      await loadDashboardData();
+    } catch {
+      // Error state is rendered from the store.
     }
   };
 
   useEffect(() => {
     let isMounted = true;
 
-    loadDashboardData(DEFAULT_TIME_RANGE)
-      .then((dashboardData) => {
+    loadDashboardSummary()
+      .then((summary) => {
         if (isMounted) {
-          setData(dashboardData);
+          setData(mapDashboardData(summary));
         }
-      })
-      .finally(() => {
-        if (isMounted) {
-          setIsLoading(false);
-        }
+      }).catch(() => {
+        // Error state is rendered from the store.
       });
 
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [loadDashboardSummary]);
 
   return (
     <div className="space-y-6">
@@ -87,18 +92,34 @@ const Dashboard = () => {
 
       {isLoading ? (
         <LoadingPlaceholder label="Refreshing dashboard metrics..." />
+      ) : dashboard.status === "error" ? (
+        <ErrorState
+          message={dashboard.error}
+          onRetry={() => handleTimeSelect(selectedTime)}
+        />
       ) : (
         <>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Cards title="Total Users" value={data.totalUsers} />
-            <Cards title="New Leads" value={data.newLeads} />
-            <Cards title="Closed Deals" value={data.closedDeals} />
+            <Cards title="Open Leads" value={data.openLeads} />
+            <Cards title="Won Deals" value={data.wonDeals} />
             <Cards title="Open Tickets" value={data.openTickets} />
           </div>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            <PieChart key={selectedTime + "-pie"} data={data.pieData} />
-            <LineChart key={selectedTime + "-line"} data={data.lineData} />
+            <PieChart
+              key={selectedTime + "-pie"}
+              data={data.pieData}
+              labels={data.pieLabels}
+              title="Ticket Priority Mix"
+            />
+            <LineChart
+              key={selectedTime + "-line"}
+              data={data.lineData}
+              labels={data.lineLabels}
+              title="Deal Pipeline by Stage"
+              datasetLabel="Deals"
+            />
           </div>
         </>
       )}

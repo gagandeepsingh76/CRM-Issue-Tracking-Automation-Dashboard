@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "../hooks/useToast";
 import { ROUTES } from "../routes/paths";
 import { useAuthStore } from "../store/authStore";
-import { ALL_ROLES, AUTH_ROLES } from "../utils/roles";
+import { ALL_ROLES, AUTH_ROLES, formatRole } from "../utils/roles";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const Register = () => {
           Register account
         </h1>
         <p className="mt-2 text-sm text-gray-600">
-          Registration UI is staged for validation and API integration.
+          Registration creates a backend account and signs you in immediately.
         </p>
       </div>
 
@@ -118,8 +118,8 @@ const Register = () => {
             {...register("password", {
               required: "Password is required.",
               minLength: {
-                value: 6,
-                message: "Password must be at least 6 characters.",
+                value: 8,
+                message: "Password must be at least 8 characters.",
               },
             })}
           />
@@ -144,10 +144,13 @@ const Register = () => {
           >
             {ALL_ROLES.map((role) => (
               <option key={role} value={role}>
-                {role}
+                {formatRole(role)}
               </option>
             ))}
           </select>
+          <p className="mt-1 text-xs text-gray-500">
+            New public registrations are created as Employee accounts.
+          </p>
         </div>
 
         {authError ? (

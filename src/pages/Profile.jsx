@@ -1,5 +1,7 @@
 import ModulePage from "../components/common/ModulePage";
 import { useAuthStore } from "../store/authStore";
+import { formatDate } from "../utils/crmFormat";
+import { formatRole } from "../utils/roles";
 
 const Profile = () => {
   const user = useAuthStore((state) => state.user);
@@ -7,12 +9,20 @@ const Profile = () => {
   return (
     <ModulePage
       title="Profile"
-      description="Show signed-in user details, role, preferences, and session controls once JWT authentication is implemented."
+      description="Signed-in user details loaded from the backend JWT session."
       actions={["Edit profile"]}
       metrics={[
-        { label: "Role", value: user?.role ?? "Unknown", helper: "Mock auth" },
-        { label: "Team", value: "Sales", helper: "Mock assignment" },
-        { label: "Tasks", value: "14", helper: "Open workload" },
+        {
+          label: "Role",
+          value: formatRole(user?.role),
+          helper: "Backend RBAC",
+        },
+        { label: "Status", value: user?.status ?? "Active", helper: "User state" },
+        {
+          label: "Created",
+          value: formatDate(user?.createdAt),
+          helper: "Account date",
+        },
         { label: "Session", value: "JWT", helper: "Persisted locally" },
       ]}
     >
@@ -31,7 +41,8 @@ const Profile = () => {
           </p>
           <p className="text-sm text-gray-500">{user?.email}</p>
           <p className="mt-2 text-sm text-gray-600">
-            This profile is backed by the temporary mock authentication store.
+            This profile is refreshed from `/auth/me` when the app restores your
+            session.
           </p>
         </div>
       </div>

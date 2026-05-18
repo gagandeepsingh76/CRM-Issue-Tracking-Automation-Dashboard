@@ -3,14 +3,14 @@ import { Link, NavLink } from "react-router-dom";
 import { ROUTES } from "../../routes/paths";
 import { protectedRoutes } from "../../routes/routeConfig";
 import { useAuthStore } from "../../store/authStore";
-import { canAccessRoute } from "../../utils/roles";
+import { canAccessRoute, formatRole } from "../../utils/roles";
 
 const navLinkClasses = ({ isActive }) =>
   [
-    "flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition",
+    "flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-blue-500",
     isActive
       ? "bg-blue-600 text-white shadow-sm"
-      : "text-gray-600 hover:bg-gray-100 hover:text-gray-950",
+      : "text-gray-600 hover:bg-gray-100 hover:text-gray-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white",
   ].join(" ");
 
 const SidebarContent = ({ onClose }) => {
@@ -76,7 +76,7 @@ const SidebarContent = ({ onClose }) => {
           Current role
         </p>
         <p className="mt-1 text-sm font-semibold text-gray-900">
-          {user?.role}
+          {formatRole(user?.role)}
         </p>
       </div>
     </div>

@@ -1,238 +1,84 @@
-# 📊 CRM Dashboard
+# CRM Suite
 
-## 📌 Description
+Production-ready CRM SaaS dashboard with a React/Vite frontend, Express API, Prisma ORM, PostgreSQL, JWT authentication, role-based routing, analytics, notifications, and CRUD workflows for customers, leads, deals, and tickets.
 
-The **CRM Dashboard** is a web application that provides a comprehensive overview of key metrics for customer relationship management. It includes visualizations such as line charts and pie charts to display user data and trends over various time ranges.
+## Stack
 
-This application is built using **React.js** for the frontend, along with **Chart.js** for rendering charts, and **Axios** for data fetching.
+- Frontend: React 18, Vite, Tailwind CSS, Zustand, Axios, Chart.js
+- Backend: Node.js, Express, Prisma, PostgreSQL, JWT, Zod
+- Testing: Vitest, Testing Library, Node test runner, Supertest
+- Deployment: Vercel frontend, Railway or Render backend, Neon PostgreSQL
 
----
+## Local Setup
 
-# 🚀 Features
-
-- **Dynamic Data Fetching**  
-  Fetches and updates data based on selected time ranges.
-
-- **User Metrics**  
-  Displays total users, new leads, closed deals, and open tickets.
-
-- **Charts**  
-  Includes pie charts and line charts to visualize data.
-
-- **Responsive Design**  
-  Designed to be fully responsive and accessible on various devices.
-
----
-
-# 🛠 Technologies Used
-
-### Frontend
-- React.js
-- Tailwind CSS
-
-### Charts
-- Chart.js
-- React Chart.js 2
-
-### Data Fetching
-- Axios
-
-### Styling
-- Tailwind CSS
-
----
-
-# ⚙ Getting Started
-
-## Prerequisites
-
-- Node.js (v14 or later)
-- npm (v6 or later) or yarn
-
----
-
-# 📥 Installation
-
-### 1️⃣ Clone the Repository
-
-```bash
-git clone https://github.com/gagandeepsingh76/CRM-Issue-Tracking-Automation-Dashboard.git
-```
-
-### 2️⃣ Change Directory
-
-```bash
-cd crm-dashboard
-```
-
-### 3️⃣ Install Dependencies
-
-```bash
+```sh
 npm install
+npm --prefix backend install
 ```
 
----
+Create environment files from the examples:
 
-# ▶ Running the Application
+```sh
+copy .env.example .env
+copy backend\.env.example backend\.env
+```
 
-### Start the Development Server
+Start PostgreSQL with Docker from the backend folder or use an existing local Postgres instance:
 
-```bash
+```sh
+cd backend
+docker compose up -d
+npm run prisma:generate
+npm run prisma:migrate
+npm run prisma:seed
+```
+
+Start the apps:
+
+```sh
+npm run backend:dev
 npm run dev
 ```
 
----
+Default local URLs:
 
-# 🧑‍💻 Usage
+- Frontend: `http://localhost:5173`
+- Backend: `http://localhost:5000`
+- API base: `http://localhost:5000/api/v1`
+- API docs: `http://localhost:5000/api/docs`
+- Health: `http://localhost:5000/health`
 
-### 1️⃣ Select Time Range
+Demo credentials after local seed:
 
-The `TimeSelector` component allows users to select a time range for the dashboard data.
+- `admin@crm.local` / `Password@123`
+- `manager@crm.local` / `Password@123`
+- `employee@crm.local` / `Password@123`
 
-Available options:
+## Quality Checks
 
-- 1 Day
-- 1 Week
-- 1 Month
-- 1 Year
-
-When a time range is selected, the dashboard dynamically fetches and displays data corresponding to that period.
-
----
-
-### 2️⃣ View Metrics
-
-The dashboard displays the following key metrics in the form of cards:
-
-- **Total Users**  
-  The total number of active, inactive, and new users.
-
-- **New Leads**  
-  The number of leads that have been converted over the selected time range.
-
-- **Closed Deals**  
-  The number of deals that were lost.
-
-- **Open Tickets**  
-  The number of unresolved tickets.
-
----
-
-### 3️⃣ View Charts
-
-#### Pie Chart
-
-The `PieChart` component visually represents the distribution of users across different departments such as:
-
-- Marketing
-- Sales
-- Support
-
-Each department is color-coded to distinguish them easily.
-
----
-
-#### Line Chart
-
-The `LineChart` component shows the trend of leads over the selected time range.
-
-It helps visualize how the number of leads fluctuates over time. Data points are plotted for each time period (e.g., monthly or yearly), allowing tracking of progress or changes effectively.
-
----
-
-### 4️⃣ Data Fetching
-
-The data is fetched from a mock API using **axios**.
-
-The API returns the number of users, leads, and tickets for each time range. The data is dynamically updated based on the selected time range and displayed in the respective charts and cards.
-
----
-
-# 📂 Project Structure
-
-```
-CRM-Dashboard
-│
-├── public
-│   ├── tailor talk.svg
-│   └── vite.svg
-│
-├── src
-│   ├── Pages
-│   │   └── Dashboard.jsx
-│   │
-│   ├── api
-│   │   └── api.js
-│   │
-│   ├── assets
-│   │   └── react.svg
-│   │
-│   ├── components
-│   │   ├── Cards.jsx
-│   │   ├── LineChart.jsx
-│   │   ├── PieChart.jsx
-│   │   └── TimeSelector.jsx
-│   │
-│   ├── services
-│   │   └── dataService.js
-│   │
-│   ├── App.css
-│   ├── App.jsx
-│   ├── index.css
-│   └── main.jsx
-│
-├── README.md
-├── index.html
-├── new.json
-├── package.json
-├── package-lock.json
-├── eslint.config.js
-├── postcss.config.js
-├── tailwind.config.js
-└── vite.config.js
+```sh
+npm run lint
+npm run test
+npm run build
+npm --prefix backend run lint
+npm --prefix backend run prisma:validate
+npm --prefix backend test
 ```
 
----
+Backend integration tests require a reachable PostgreSQL database and valid `DATABASE_URL`/`DIRECT_URL`.
 
-# 📸 Dashboard Preview
+## Production Features
 
-<p align="center">
+- Route-level lazy loading and Suspense fallbacks
+- Production bundle chunking for React, charts, and app code
+- Persisted JWT auth with auto-refresh and logout on `401`
+- Dark mode with system-aware initial preference
+- Dynamic page titles and meta descriptions
+- Accessible skip links, modal semantics, focus states, and responsive module layouts
+- Helmet, compression, rate limiting, CORS allow-list, request sanitization, request IDs, and structured error logs
+- Readiness/liveness endpoints and OpenAPI documentation structure
+- GitHub Actions quality gate for frontend, backend, Prisma, and integration tests
 
-<img width="910" height="623" alt="CRM Dashboard Preview" src="https://github.com/user-attachments/assets/44386b7a-4b15-4a62-a27b-1fe578923628" />
+## Deployment
 
-</p>
-
----
-
-# 👨‍💻 Author
-
-**Gagandeep Singh**
-
-Computer Science Student  
-Interested in **Artificial Intelligence, Web Development, and Data Visualization**
-
----
-
-# ⭐ GitHub Repository Description
-
-CRM Dashboard built using **React.js, Tailwind CSS, Chart.js, and Axios** to visualize customer relationship management metrics with interactive charts and dynamic data fetching.
-
----
-
-# 🏷 GitHub Topics
-
-```
-react
-crm-dashboard
-chartjs
-data-visualization
-tailwindcss
-axios
-dashboard-ui
-web-application
-frontend
-```
-
----
-
-⭐ If you like this project, consider giving it a **star** on GitHub!
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for the Vercel, Railway/Render, and Neon production flow.

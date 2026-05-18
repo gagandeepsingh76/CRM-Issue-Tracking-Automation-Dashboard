@@ -2,7 +2,11 @@ import PropTypes from "prop-types";
 
 const LoadingPlaceholder = ({ label }) => {
   return (
-    <div className="space-y-5 rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+    <div
+      className="space-y-5 rounded-lg border border-gray-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900"
+      role="status"
+      aria-live="polite"
+    >
       <div>
         <div className="h-4 w-28 animate-pulse rounded bg-gray-200" />
         <div className="mt-3 h-7 w-56 animate-pulse rounded bg-gray-200" />

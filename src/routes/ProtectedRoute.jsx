@@ -10,9 +10,10 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   const location = useLocation();
   const user = useAuthStore((state) => state.user);
   const hasHydrated = useAuthStore((state) => state.hasHydrated);
+  const isRestoringSession = useAuthStore((state) => state.isRestoringSession);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated());
 
-  if (!hasHydrated) {
+  if (!hasHydrated || isRestoringSession) {
     return <LoadingPlaceholder label="Restoring secure session..." />;
   }
 

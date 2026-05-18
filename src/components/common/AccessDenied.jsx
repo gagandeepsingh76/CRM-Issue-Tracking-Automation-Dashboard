@@ -9,8 +9,8 @@ const AccessDenied = () => {
       </p>
       <h2 className="mt-2 text-2xl font-bold">You cannot open this module.</h2>
       <p className="mt-2 max-w-2xl text-sm leading-6">
-        This route is protected by role metadata. Switch to an authorized mock
-        role or ask an administrator to update your permissions.
+        This route is protected by role metadata from your authenticated
+        backend session.
       </p>
       <Link
         to={ROUTES.DASHBOARD}

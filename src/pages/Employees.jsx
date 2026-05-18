@@ -4,7 +4,7 @@ const Employees = () => {
   return (
     <ModulePage
       title="Employees"
-      description="Manage internal CRM users, role assignments, team ownership, and operational access as the RBAC layer arrives."
+      description="Review internal CRM users, role assignments, team ownership, and operational access."
       actions={["Invite user", "Manage roles"]}
       metrics={[
         { label: "Team members", value: "18", helper: "Across roles" },
@@ -18,7 +18,7 @@ const Employees = () => {
           <div key={role} className="rounded-md border border-gray-200 p-4">
             <p className="font-semibold text-gray-950">{role}</p>
             <p className="mt-1 text-sm text-gray-500">
-              Permission profile placeholder
+              Permission profile enforced by backend role metadata.
             </p>
           </div>
         ))}

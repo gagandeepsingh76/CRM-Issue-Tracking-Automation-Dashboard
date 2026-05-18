@@ -11,7 +11,10 @@ const ProtectedLayout = () => {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-900">
+    <div className="min-h-screen bg-gray-100 text-gray-900 dark:bg-slate-950 dark:text-slate-100">
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
       <Sidebar
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
@@ -23,7 +26,10 @@ const ProtectedLayout = () => {
           onMenuClick={() => setIsSidebarOpen(true)}
         />
 
-        <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <main
+          id="main-content"
+          className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8"
+        >
           <PageTransition key={location.pathname}>
             <Outlet />
           </PageTransition>

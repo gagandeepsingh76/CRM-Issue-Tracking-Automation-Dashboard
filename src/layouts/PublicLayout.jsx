@@ -1,21 +1,31 @@
 import { Outlet, useLocation } from "react-router-dom";
 import PageTransition from "../components/common/PageTransition";
+import ThemeToggle from "../components/common/ThemeToggle";
 
 const PublicLayout = () => {
   const location = useLocation();
 
   return (
-    <main className="min-h-screen bg-gray-100">
+    <main className="min-h-screen bg-gray-100 dark:bg-slate-950">
+      <a href="#auth-content" className="skip-link">
+        Skip to authentication form
+      </a>
       <div className="grid min-h-screen lg:grid-cols-[1.1fr_0.9fr]">
-        <section className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
+        <section
+          id="auth-content"
+          className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-8"
+        >
           <div className="w-full max-w-md">
+            <div className="mb-4 flex justify-end">
+              <ThemeToggle />
+            </div>
             <PageTransition key={location.pathname}>
               <Outlet />
             </PageTransition>
           </div>
         </section>
 
-        <aside className="hidden bg-slate-950 px-10 py-12 text-white lg:flex lg:flex-col lg:justify-between">
+        <aside className="hidden bg-slate-950 px-10 py-12 text-white lg:flex lg:flex-col lg:justify-between dark:bg-black">
           <div>
             <p className="text-sm font-semibold uppercase tracking-wide text-blue-300">
               CRM Operations
@@ -24,8 +34,8 @@ const PublicLayout = () => {
               One workspace for customers, revenue, and support.
             </h1>
             <p className="mt-5 max-w-lg text-base text-slate-300">
-              Phase 2 establishes the app shell. Authentication and live CRM
-              data will connect to this structure in the next phases.
+              Secure authentication, live CRM data, analytics, and production
+              deployment controls are connected end to end.
             </p>
           </div>
 

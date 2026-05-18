@@ -2,6 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  .dark {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-gray-100 text-gray-900 antialiased dark:bg-slate-950 dark:text-slate-100;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-blue-500 ring-offset-2 ring-offset-white dark:ring-offset-slate-950;
+  }
+}
+
+@layer components {
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[90] focus:rounded-md focus:bg-blue-600 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white;
+  }
+}
+
 @layer utilities {
   .animate-page-enter {
     animation: page-enter 180ms ease-out both;
@@ -9,6 +41,50 @@
 
   .animate-sidebar-enter {
     animation: sidebar-enter 180ms ease-out both;
+  }
+
+  .dark .bg-white {
+    @apply bg-slate-900;
+  }
+
+  .dark .bg-gray-50 {
+    @apply bg-slate-800;
+  }
+
+  .dark .bg-gray-100 {
+    @apply bg-slate-950;
+  }
+
+  .dark .border-gray-100,
+  .dark .border-gray-200,
+  .dark .border-gray-300 {
+    @apply border-slate-700;
+  }
+
+  .dark .divide-gray-100 > :not([hidden]) ~ :not([hidden]),
+  .dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+    @apply border-slate-700;
+  }
+
+  .dark .text-gray-400 {
+    @apply text-slate-500;
+  }
+
+  .dark .text-gray-500,
+  .dark .text-gray-600,
+  .dark .text-gray-700 {
+    @apply text-slate-300;
+  }
+
+  .dark .text-gray-900,
+  .dark .text-gray-950 {
+    @apply text-slate-50;
+  }
+
+  .dark input,
+  .dark select,
+  .dark textarea {
+    @apply border-slate-700 bg-slate-950 text-slate-100 placeholder:text-slate-500;
   }
 }
 

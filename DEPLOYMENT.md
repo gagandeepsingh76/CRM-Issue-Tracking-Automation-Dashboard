@@ -1,48 +1,116 @@
-# Vercel Deployment Steps for CRM Dashboard (React + Vite)
+# CRM Suite Production Deployment
 
-1. **Login to Vercel**
-   - Go to https://vercel.com and log in (or sign up) with your GitHub/GitLab/Bitbucket account.
+This repository is production-ready for a split deployment:
 
-2. **Import Project**
-   - Click "Add New Project" and import your GitHub repo (or drag-and-drop the folder if deploying manually).
+- Frontend: Vercel static Vite app
+- Backend: Railway or Render Node.js web service
+- Database: Neon PostgreSQL
 
-3. **Configure Project**
-   - Set the **Framework Preset** to `Vite` (Vercel auto-detects this).
-   - Set the **Build Command** to `npm run build` (default for Vite).
-   - Set the **Output Directory** to `dist` (default for Vite).
+## Environment Matrix
 
-4. **Environment Variables** (if needed)
-   - If you use any, add them in the Vercel dashboard under Project Settings > Environment Variables.
+Frontend production variables:
 
-5. **Routing for SPA**
-   - The provided `vercel.json` ensures all routes are rewritten to `index.html` for React SPA routing.
+```sh
+VITE_API_BASE_URL=https://your-backend-production-url.example.com/api/v1
+VITE_APP_NAME="CRM Suite"
+```
 
-6. **Deploy**
-   - Click "Deploy". Vercel will install dependencies, build, and deploy your app.
+Backend production variables:
 
-7. **Production URL**
-   - After deployment, Vercel provides a live URL for your app.
+```sh
+NODE_ENV=production
+PORT=5000
+DATABASE_URL="postgresql://USER:PASSWORD@HOST-pooler.REGION.aws.neon.tech/DB?sslmode=require&schema=public"
+DIRECT_URL="postgresql://USER:PASSWORD@HOST.REGION.aws.neon.tech/DB?sslmode=require&schema=public"
+JWT_SECRET="replace-with-at-least-32-random-bytes"
+JWT_EXPIRES_IN=7d
+BCRYPT_SALT_ROUNDS=12
+CORS_ORIGIN=https://your-frontend.vercel.app
+TRUST_PROXY=true
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX=300
+LOG_LEVEL=info
+```
 
----
+Use the Neon pooled connection for `DATABASE_URL` and the direct connection for `DIRECT_URL` so application traffic and Prisma migrations use the right connection path.
 
-## Manual Deploy (Optional)
-If you want to deploy from your local machine (not recommended for production):
+## Frontend: Vercel
 
-1. Install Vercel CLI:
-   ```sh
-   npm i -g vercel
-   ```
-2. Run:
-   ```sh
-   vercel
-   ```
-   Follow the prompts to deploy.
+1. Import the GitHub repository into Vercel.
+2. Use the Vite preset.
+3. Keep these configured values from `vercel.json`:
+   - Install command: `npm ci`
+   - Build command: `npm run build`
+   - Output directory: `dist`
+4. Add the frontend environment variables above in Vercel Project Settings.
+5. Deploy. The SPA rewrite in `vercel.json` keeps protected route deep links working.
 
----
+## Backend: Railway
 
-## Useful Commands
-- `npm install`      # Install dependencies
-- `npm run dev`      # Start local dev server
-- `npm run build`    # Build for production
-- `npm run preview`  # Preview production build locally
-- `vercel`           # Deploy using Vercel CLI (optional)
+1. Create a Railway project from the same GitHub repository.
+2. Use the root `railway.toml` config.
+3. Add the backend production variables above.
+4. Provision Neon separately, then set `DATABASE_URL` and `DIRECT_URL`.
+5. Deploy. Railway will run Prisma generation at build time and migrations before app start.
+
+## Backend Alternative: Render
+
+Use `render.yaml` as the infrastructure blueprint. Set the same backend production variables in Render, keeping secrets marked as synced false.
+
+## Database: Neon PostgreSQL
+
+1. Create a Neon project and production branch.
+2. Copy the pooled connection string into `DATABASE_URL`.
+3. Copy the direct connection string into `DIRECT_URL`.
+4. Run migrations through the backend deployment start command or manually:
+
+```sh
+npm --prefix backend run prisma:deploy
+```
+
+## Production Seed Strategy
+
+Production seeding is opt-in and only creates or updates the first admin account. It never resets CRM data.
+
+```sh
+ALLOW_PRODUCTION_SEED=true \
+SEED_ADMIN_EMAIL=admin@your-domain.example \
+SEED_ADMIN_PASSWORD="temporary-strong-password" \
+npm --prefix backend run prisma:seed:prod
+```
+
+Rotate the seeded admin password after first login.
+
+## Health and API Docs
+
+- Liveness: `GET /live`
+- Readiness and DB check: `GET /health` or `GET /ready`
+- API docs JSON: `GET /api/docs`
+- Versioned API: `/api/v1`
+
+## CI/CD
+
+GitHub Actions runs:
+
+- Frontend `npm ci`, lint, Vitest smoke tests, production build
+- Backend `npm ci`, Prisma generate/validate/deploy, lint, API integration tests against Postgres
+
+Required GitHub secrets are only needed if you later add deploy jobs. The current workflow is a quality gate and does not deploy automatically.
+
+## Local Production Smoke Test
+
+```sh
+npm ci
+npm --prefix backend ci
+npm --prefix backend run prisma:deploy
+npm --prefix backend run prisma:seed
+npm run build
+npm --prefix backend start
+npm run preview:prod
+```
+
+Then verify:
+
+- Frontend opens at the Vite preview URL.
+- Backend health returns `healthy`.
+- Login works with `admin@crm.local` / `Password@123` for local seeded data.

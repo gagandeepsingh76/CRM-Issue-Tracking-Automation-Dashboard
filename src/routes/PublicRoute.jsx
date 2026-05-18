@@ -6,9 +6,10 @@ import { ROUTES } from "./paths";
 
 const PublicRoute = ({ children }) => {
   const hasHydrated = useAuthStore((state) => state.hasHydrated);
+  const isRestoringSession = useAuthStore((state) => state.isRestoringSession);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated());
 
-  if (!hasHydrated) {
+  if (!hasHydrated || isRestoringSession) {
     return <LoadingPlaceholder label="Checking session..." />;
   }
 

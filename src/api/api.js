@@ -1,5 +1,22 @@
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "";
-export const dashboardMockUrl =
-  "https://mocki.io/v1/06f10715-775b-4977-a2e2-7c6694919757";
+import { env } from "../config/env";
 
-export const url = dashboardMockUrl;
+export const API_BASE_URL = env.apiBaseUrl;
+
+export const API_ENDPOINTS = {
+  auth: {
+    login: "/auth/login",
+    register: "/auth/register",
+    me: "/auth/me",
+  },
+  analytics: {
+    summary: "/analytics/summary",
+    pipeline: "/analytics/pipeline",
+    tickets: "/analytics/tickets",
+  },
+  customers: "/customers",
+  leads: "/leads",
+  deals: "/deals",
+  tickets: "/tickets",
+  notifications: "/notifications",
+  users: "/users",
+};

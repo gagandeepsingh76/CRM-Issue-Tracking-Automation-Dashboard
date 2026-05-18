@@ -1,0 +1,42 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CRM Suite API",
+    "version": "1.0.0",
+    "description": "Production CRM SaaS API for authentication, analytics, customers, leads, deals, tickets, notifications, and users."
+  },
+  "servers": [
+    {
+      "url": "/api/v1",
+      "description": "Current deployment"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/auth/login": { "post": { "summary": "Authenticate with email and password." } },
+    "/auth/register": { "post": { "summary": "Create an employee account." } },
+    "/auth/me": { "get": { "summary": "Return the authenticated profile." } },
+    "/analytics/summary": { "get": { "summary": "Dashboard summary metrics." } },
+    "/analytics/pipeline": { "get": { "summary": "Deal pipeline analytics." } },
+    "/analytics/tickets": { "get": { "summary": "Ticket status and priority analytics." } },
+    "/customers": { "get": { "summary": "List customers." }, "post": { "summary": "Create customer." } },
+    "/leads": { "get": { "summary": "List leads." }, "post": { "summary": "Create lead." } },
+    "/deals": { "get": { "summary": "List deals." }, "post": { "summary": "Create deal." } },
+    "/tickets": { "get": { "summary": "List tickets." }, "post": { "summary": "Create ticket." } },
+    "/notifications": { "get": { "summary": "List current-user notifications." } },
+    "/users": { "get": { "summary": "List assignable users." } }
+  }
+}
