@@ -220,3 +220,173 @@ https://github.com/gagandeepsingh76/CRM-Issue-Tracking-Automation-Dashboard
 
 ```env
 VITE_API_BASE_URL=https://crm-dashboard-backend-production-10a8.up.railway.app/api/v1
+
+# Backend (.env)
+
+```env
+DATABASE_URL=YOUR_DATABASE_URL
+DIRECT_URL=YOUR_DIRECT_URL
+JWT_SECRET=YOUR_SECRET_KEY
+CORS_ORIGIN=https://crm-issue-tracking-automation-dashb.vercel.app
+NODE_ENV=production
+TRUST_PROXY=true
+```
+
+---
+
+# Local Setup
+
+## 1. Clone Repository
+
+```bash
+git clone https://github.com/gagandeepsingh76/CRM-Issue-Tracking-Automation-Dashboard.git
+cd CRM-Issue-Tracking-Automation-Dashboard
+```
+
+---
+
+## 2. Install Dependencies
+
+### Frontend
+
+```bash
+npm install
+```
+
+### Backend
+
+```bash
+cd backend
+npm install
+```
+
+---
+
+## 3. Setup Environment Variables
+
+Create `.env` files for frontend and backend.
+
+---
+
+## 4. Run Frontend
+
+```bash
+npm run dev
+```
+
+---
+
+## 5. Run Backend
+
+```bash
+cd backend
+npm run dev
+```
+
+---
+
+# Database Migration
+
+## Prisma Generate
+
+```bash
+npx prisma generate
+```
+
+## Prisma Migration
+
+```bash
+npx prisma migrate dev
+```
+
+---
+
+# Production Deployment
+
+## Frontend Deployment (Vercel)
+
+1. Import GitHub repository  
+2. Add:
+
+```env
+VITE_API_BASE_URL
+```
+
+3. Deploy
+
+---
+
+## Backend Deployment (Railway)
+
+1. Connect GitHub repository  
+2. Add environment variables  
+3. Deploy backend service
+
+---
+
+# Production Issues Fixed
+
+## Backend Issues
+
+- DATABASE_URL Missing
+- JWT_SECRET Missing
+- CORS_ORIGIN Missing
+- Railway Healthcheck Failure
+- Prisma Migration Errors
+
+---
+
+## Frontend Issues
+
+- Dark Mode UI Visibility
+- Sidebar Visibility
+- Network Error Handling
+- API Connection Issues
+
+---
+
+## Authentication Issues
+
+- Admin Role Not Saving
+- Employee Role Override
+- Registration Validation Issues
+- JWT Session Handling
+
+---
+
+# Deployment Status
+
+| Service | Status |
+|---|---|
+| Frontend | Live |
+| Backend | Live |
+| Database | Connected |
+| Authentication | Working |
+| CRUD Operations | Working |
+| RBAC | Working |
+| Dark Mode | Working |
+
+---
+
+# Future Improvements
+
+- Email Notifications
+- File Upload Support
+- Real-time Notifications
+- Activity Logs
+- AI-powered CRM Insights
+- WebSocket Integration
+
+---
+
+# Author
+
+## Gagandeep Singh
+- Student Research Associate Intern at IIT Kanpur
+---
+
+# License
+
+This project is created for educational, portfolio, and enterprise learning purposes.
+
+Inspired by professional enterprise CRM architecture and deployment workflows.
