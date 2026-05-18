@@ -2,21 +2,14 @@ import PropTypes from 'prop-types';
 import { memo, useMemo } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { useTheme } from '../hooks/useTheme';
 
 // Register the necessary components
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const chartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      position: 'bottom',
-    },
-  },
-};
-
 const PieChart = ({ data, labels, title }) => {
+  const { isDarkMode } = useTheme();
+
   const pieData = useMemo(() => ({
     labels,
     datasets: [
@@ -35,9 +28,24 @@ const PieChart = ({ data, labels, title }) => {
     ],
   }), [data, labels]);
 
+  const chartOptions = useMemo(() => ({
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          color: isDarkMode ? '#CBD5E1' : '#374151',
+        },
+      },
+    },
+  }), [isDarkMode]);
+
   return (
-    <div className="bg-white shadow-md rounded-lg p-6">
-      <h2 className="text-lg font-semibold mb-4">{title}</h2>
+    <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-md dark:border-slate-800 dark:bg-slate-900">
+      <h2 className="mb-4 text-lg font-semibold text-gray-950 dark:text-white">
+        {title}
+      </h2>
       <div className="h-72">
         <Pie data={pieData} options={chartOptions} />
       </div>

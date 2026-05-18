@@ -23,6 +23,39 @@ const DEAL_STAGES = [
   "LOST",
 ];
 
+const PROGRESS_WIDTH_CLASS_BY_PERCENT = {
+  0: "w-0",
+  5: "w-[5%]",
+  10: "w-[10%]",
+  15: "w-[15%]",
+  20: "w-[20%]",
+  25: "w-1/4",
+  30: "w-[30%]",
+  35: "w-[35%]",
+  40: "w-[40%]",
+  45: "w-[45%]",
+  50: "w-1/2",
+  55: "w-[55%]",
+  60: "w-[60%]",
+  65: "w-[65%]",
+  70: "w-[70%]",
+  75: "w-3/4",
+  80: "w-[80%]",
+  85: "w-[85%]",
+  90: "w-[90%]",
+  95: "w-[95%]",
+  100: "w-full",
+};
+
+const getProgressWidthClass = (value) => {
+  const numericValue = Number(value ?? 0);
+  const safeValue = Number.isFinite(numericValue) ? numericValue : 0;
+  const normalizedValue = Math.max(0, Math.min(safeValue, 100));
+  const bucket = Math.ceil(normalizedValue / 5) * 5;
+
+  return PROGRESS_WIDTH_CLASS_BY_PERCENT[bucket];
+};
+
 const emptyDealForm = {
   title: "",
   value: "",
@@ -221,17 +254,16 @@ const Deals = () => {
       <div className="space-y-5">
         <div className="grid gap-3 lg:grid-cols-6">
           {(pipelineAnalytics.data ?? []).map((stage) => (
-            <div key={stage.stage} className="rounded-md border border-gray-200 p-4">
-              <p className="text-sm font-semibold text-gray-950">
+            <div key={stage.stage} className="rounded-md border border-gray-200 p-4 dark:border-slate-800 dark:bg-slate-900/60">
+              <p className="text-sm font-semibold text-gray-950 dark:text-white">
                 {formatEnum(stage.stage)}
               </p>
-              <p className="mt-2 text-lg font-bold text-gray-950">
+              <p className="mt-2 text-lg font-bold text-gray-950 dark:text-white">
                 {formatCurrency(stage.value)}
               </p>
-              <div className="mt-3 h-2 rounded-full bg-gray-100">
+              <div className="mt-3 h-2 rounded-full bg-gray-100 dark:bg-slate-800">
                 <div
-                  className="h-2 rounded-full bg-blue-600"
-                  style={{ width: `${Math.min(stage.averageProbability, 100)}%` }}
+                  className={`h-2 rounded-full bg-blue-600 ${getProgressWidthClass(stage.averageProbability)}`}
                 />
               </div>
             </div>
@@ -247,12 +279,12 @@ const Deals = () => {
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search deal title or customer"
-            className="rounded-md border border-gray-300 px-3 py-2 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:ring-blue-900/40"
           />
           <select
             value={stageFilter}
             onChange={(event) => setStageFilter(event.target.value)}
-            className="rounded-md border border-gray-300 px-3 py-2 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
           >
             <option value="">All stages</option>
             {DEAL_STAGES.map((stage) => (
@@ -288,36 +320,35 @@ const Deals = () => {
             {dealItems.map((deal) => (
               <div
                 key={deal.id}
-                className="grid gap-3 rounded-md border border-gray-200 p-4 lg:grid-cols-[1.4fr_160px_180px_auto]"
+                className="grid gap-3 rounded-md border border-gray-200 p-4 dark:border-slate-800 dark:bg-slate-900/60 lg:grid-cols-[1.4fr_160px_180px_auto]"
               >
                 <div>
-                  <p className="font-semibold text-gray-950">{deal.title}</p>
-                  <p className="mt-1 text-sm text-gray-500">
+                  <p className="font-semibold text-gray-950 dark:text-white">{deal.title}</p>
+                  <p className="mt-1 text-sm text-gray-500 dark:text-slate-400">
                     {deal.customer?.name ?? "No customer"} -{" "}
                     {formatDate(deal.expectedCloseDate)}
                   </p>
-                  <p className="mt-2 text-sm font-semibold text-gray-900">
+                  <p className="mt-2 text-sm font-semibold text-gray-900 dark:text-slate-100">
                     {formatCurrency(deal.value)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-slate-400">
                     Progress
                   </p>
-                  <div className="mt-2 h-2 rounded-full bg-gray-100">
+                  <div className="mt-2 h-2 rounded-full bg-gray-100 dark:bg-slate-800">
                     <div
-                      className="h-2 rounded-full bg-blue-600"
-                      style={{ width: `${deal.probability}%` }}
+                      className={`h-2 rounded-full bg-blue-600 ${getProgressWidthClass(deal.probability)}`}
                     />
                   </div>
-                  <p className="mt-2 text-sm text-gray-600">
+                  <p className="mt-2 text-sm text-gray-600 dark:text-slate-300">
                     {formatPercent(deal.probability)}
                   </p>
                 </div>
                 <select
                   value={deal.stage}
                   onChange={(event) => handleStageChange(deal, event.target.value)}
-                  className="h-10 rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="h-10 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
                 >
                   {DEAL_STAGES.map((stage) => (
                     <option key={stage} value={stage}>
@@ -328,14 +359,14 @@ const Deals = () => {
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"
-                    className="h-10 rounded-md border border-gray-200 px-3 text-sm font-medium text-gray-700 transition hover:bg-gray-100"
+                    className="h-10 rounded-md border border-gray-200 px-3 text-sm font-medium text-gray-700 transition hover:bg-gray-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                     onClick={() => openEditModal(deal)}
                   >
                     Edit
                   </button>
                   <button
                     type="button"
-                    className="h-10 rounded-md border border-red-200 px-3 text-sm font-medium text-red-600 transition hover:bg-red-50"
+                    className="h-10 rounded-md border border-red-200 px-3 text-sm font-medium text-red-600 transition hover:bg-red-50 dark:border-red-900/70 dark:text-red-300 dark:hover:bg-red-950/40"
                     onClick={() => handleDelete(deal)}
                   >
                     Delete
@@ -350,17 +381,17 @@ const Deals = () => {
       {isModalOpen ? (
         <Modal title={editingDeal ? "Edit deal" : "Add deal"} onClose={closeModal}>
           <form className="grid gap-4 sm:grid-cols-2" onSubmit={handleSubmit}>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Title
               <input
                 required
                 name="title"
                 value={form.title}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               />
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Value
               <input
                 required
@@ -369,17 +400,17 @@ const Deals = () => {
                 min="0"
                 value={form.value}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               />
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Customer
               <select
                 required
                 name="customerId"
                 value={form.customerId}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               >
                 <option value="">Select customer</option>
                 {customers.map((customer) => (
@@ -389,13 +420,13 @@ const Deals = () => {
                 ))}
               </select>
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Stage
               <select
                 name="stage"
                 value={form.stage}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               >
                 {DEAL_STAGES.map((stage) => (
                   <option key={stage} value={stage}>
@@ -404,7 +435,7 @@ const Deals = () => {
                 ))}
               </select>
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Probability
               <input
                 name="probability"
@@ -413,26 +444,26 @@ const Deals = () => {
                 max="100"
                 value={form.probability}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               />
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Expected close date
               <input
                 name="expectedCloseDate"
                 type="date"
                 value={form.expectedCloseDate}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               />
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Owner
               <select
                 name="assignedToId"
                 value={form.assignedToId}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               >
                 <option value="">Assign to me</option>
                 {users.map((user) => (
@@ -442,20 +473,20 @@ const Deals = () => {
                 ))}
               </select>
             </label>
-            <label className="text-sm font-medium text-gray-700 sm:col-span-2">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200 sm:col-span-2">
               Notes
               <textarea
                 name="notes"
                 rows="3"
                 value={form.notes}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               />
             </label>
             <div className="flex justify-end gap-2 sm:col-span-2">
               <button
                 type="button"
-                className="rounded-md border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
+                className="rounded-md border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                 onClick={closeModal}
               >
                 Cancel

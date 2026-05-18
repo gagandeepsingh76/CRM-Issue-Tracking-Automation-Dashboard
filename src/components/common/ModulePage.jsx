@@ -8,11 +8,13 @@ const ModulePage = ({ title, description, metrics, actions, children }) => {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-sm font-medium uppercase tracking-wide text-blue-600">
+          <p className="text-sm font-medium uppercase tracking-wide text-blue-600 dark:text-blue-400">
             CRM Module
           </p>
-          <h2 className="mt-2 text-2xl font-bold text-gray-950">{title}</h2>
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-gray-600">
+          <h2 className="mt-2 text-2xl font-bold text-gray-950 dark:text-white">
+            {title}
+          </h2>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-gray-600 dark:text-slate-300">
             {description}
           </p>
         </div>
@@ -42,13 +44,17 @@ const ModulePage = ({ title, description, metrics, actions, children }) => {
         {metrics.map((metric) => (
           <article
             key={metric.label}
-            className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm"
+            className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
           >
-            <p className="text-sm font-medium text-gray-500">{metric.label}</p>
-            <p className="mt-2 text-2xl font-bold text-gray-950">
+            <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
+              {metric.label}
+            </p>
+            <p className="mt-2 text-2xl font-bold text-gray-950 dark:text-white">
               {metric.value}
             </p>
-            <p className="mt-2 text-sm text-gray-500">{metric.helper}</p>
+            <p className="mt-2 text-sm text-gray-500 dark:text-slate-400">
+              {metric.helper}
+            </p>
           </article>
         ))}
       </div>

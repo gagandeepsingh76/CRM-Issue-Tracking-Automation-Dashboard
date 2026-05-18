@@ -3,7 +3,7 @@ import { ROUTES } from "../../routes/paths";
 
 const AccessDenied = () => {
   return (
-    <section className="rounded-lg border border-amber-200 bg-amber-50 p-6 text-amber-950 shadow-sm">
+    <section className="rounded-lg border border-amber-200 bg-amber-50 p-6 text-amber-950 shadow-sm dark:border-amber-900/70 dark:bg-amber-950/40 dark:text-amber-100">
       <p className="text-sm font-semibold uppercase tracking-wide">
         Access restricted
       </p>

@@ -15,9 +15,9 @@ const Employees = () => {
     >
       <div className="grid gap-3 md:grid-cols-3">
         {["Admin", "Manager", "Employee"].map((role) => (
-          <div key={role} className="rounded-md border border-gray-200 p-4">
-            <p className="font-semibold text-gray-950">{role}</p>
-            <p className="mt-1 text-sm text-gray-500">
+          <div key={role} className="rounded-md border border-gray-200 p-4 dark:border-slate-800 dark:bg-slate-900/60">
+            <p className="font-semibold text-gray-950 dark:text-white">{role}</p>
+            <p className="mt-1 text-sm text-gray-500 dark:text-slate-400">
               Permission profile enforced by backend role metadata.
             </p>
           </div>

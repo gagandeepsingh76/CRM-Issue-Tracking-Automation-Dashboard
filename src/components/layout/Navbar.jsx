@@ -18,6 +18,22 @@ const getInitials = (name = "User") =>
     .slice(0, 2)
     .toUpperCase();
 
+const BellIcon = () => (
+  <svg
+    aria-hidden="true"
+    className="h-5 w-5"
+    fill="none"
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth="1.8"
+    viewBox="0 0 24 24"
+  >
+    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
+    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+  </svg>
+);
+
 const Navbar = ({ currentRoute, onMenuClick }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
@@ -70,13 +86,13 @@ const Navbar = ({ currentRoute, onMenuClick }) => {
   };
 
   return (
-    <header className="sticky top-0 z-30 border-b border-gray-200 bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-gray-200 bg-white/95 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90">
       <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <div className="flex min-w-0 items-center gap-3">
           <button
             type="button"
             aria-label="Open navigation"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 text-gray-700 lg:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 text-gray-700 transition hover:bg-gray-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800 lg:hidden"
             onClick={onMenuClick}
           >
             <span className="space-y-1.5">
@@ -88,7 +104,7 @@ const Navbar = ({ currentRoute, onMenuClick }) => {
 
           <div className="min-w-0">
             <Breadcrumbs currentRoute={currentRoute} />
-            <h1 className="truncate text-xl font-semibold text-gray-950">
+            <h1 className="truncate text-xl font-semibold text-gray-950 dark:text-white">
               {currentRoute.title}
             </h1>
           </div>
@@ -101,10 +117,10 @@ const Navbar = ({ currentRoute, onMenuClick }) => {
             <button
               type="button"
               aria-label="Open notifications"
-              className="relative inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 text-gray-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+              className="relative inline-flex h-10 w-10 items-center justify-center rounded-md border border-gray-200 text-gray-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 dark:border-slate-700 dark:text-slate-200 dark:hover:border-blue-500 dark:hover:bg-slate-800 dark:hover:text-blue-300"
               onClick={() => setIsNotificationsOpen((isOpen) => !isOpen)}
             >
-              <span className="text-lg leading-none">!</span>
+              <BellIcon />
               {unreadCount ? (
                 <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold text-white">
                   {unreadCount}
@@ -113,15 +129,15 @@ const Navbar = ({ currentRoute, onMenuClick }) => {
             </button>
 
             {isNotificationsOpen ? (
-              <div className="absolute right-0 mt-2 w-72 rounded-lg border border-gray-200 bg-white p-3 shadow-lg">
+              <div className="absolute right-0 mt-2 w-72 rounded-lg border border-gray-200 bg-white p-3 shadow-lg dark:border-slate-700 dark:bg-slate-900 dark:shadow-slate-950/40">
                 <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm font-semibold text-gray-950">
+                  <p className="text-sm font-semibold text-gray-950 dark:text-slate-100">
                     Notifications
                   </p>
                   {unreadCount ? (
                     <button
                       type="button"
-                      className="text-xs font-semibold text-blue-600"
+                      className="text-xs font-semibold text-blue-600 transition hover:text-blue-700 dark:text-blue-300 dark:hover:text-blue-200"
                       onClick={handleMarkAllRead}
                     >
                       Mark all read
@@ -130,7 +146,7 @@ const Navbar = ({ currentRoute, onMenuClick }) => {
                 </div>
                 <div className="mt-3 space-y-2">
                   {notifications.status === "loading" ? (
-                    <div className="rounded-md bg-gray-50 px-3 py-3 text-sm text-gray-600">
+                    <div className="rounded-md bg-gray-50 px-3 py-3 text-sm text-gray-600 dark:bg-slate-800 dark:text-slate-300">
                       Loading notifications...
                     </div>
                   ) : notifications.items.length ? (
@@ -140,8 +156,8 @@ const Navbar = ({ currentRoute, onMenuClick }) => {
                         type="button"
                         className={`block w-full rounded-md px-3 py-2 text-left text-sm transition ${
                           notification.isRead
-                            ? "bg-gray-50 text-gray-600"
-                            : "bg-blue-50 text-blue-950"
+                            ? "bg-gray-50 text-gray-600 hover:bg-gray-100 dark:bg-slate-800/70 dark:text-slate-300 dark:hover:bg-slate-800"
+                            : "bg-blue-50 text-blue-950 hover:bg-blue-100 dark:bg-blue-950/40 dark:text-blue-100 dark:hover:bg-blue-900/50"
                         }`}
                         onClick={() => handleNotificationClick(notification)}
                       >
@@ -151,13 +167,13 @@ const Navbar = ({ currentRoute, onMenuClick }) => {
                         <span className="mt-1 block text-xs">
                           {notification.message}
                         </span>
-                        <span className="mt-2 block text-xs text-gray-500">
+                        <span className="mt-2 block text-xs text-gray-500 dark:text-slate-400">
                           {formatDate(notification.createdAt)}
                         </span>
                       </button>
                     ))
                   ) : (
-                    <div className="rounded-md bg-gray-50 px-3 py-3 text-sm text-gray-600">
+                    <div className="rounded-md bg-gray-50 px-3 py-3 text-sm text-gray-600 dark:bg-slate-800 dark:text-slate-300">
                       No notifications yet.
                     </div>
                   )}
@@ -169,7 +185,7 @@ const Navbar = ({ currentRoute, onMenuClick }) => {
           <div className="relative">
             <button
               type="button"
-              className="inline-flex items-center gap-3 rounded-md border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+              className="inline-flex items-center gap-3 rounded-md border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 dark:border-slate-700 dark:text-slate-200 dark:hover:border-blue-500 dark:hover:bg-slate-800 dark:hover:text-blue-300"
               onClick={() => setIsProfileOpen((isOpen) => !isOpen)}
             >
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">
@@ -179,27 +195,29 @@ const Navbar = ({ currentRoute, onMenuClick }) => {
             </button>
 
             {isProfileOpen ? (
-              <div className="absolute right-0 mt-2 w-64 rounded-lg border border-gray-200 bg-white p-3 shadow-lg">
-                <div className="border-b border-gray-100 pb-3">
-                  <p className="font-semibold text-gray-950">{user?.name}</p>
-                  <p className="truncate text-sm text-gray-500">
+              <div className="absolute right-0 mt-2 w-64 rounded-lg border border-gray-200 bg-white p-3 shadow-lg dark:border-slate-700 dark:bg-slate-900 dark:shadow-slate-950/40">
+                <div className="border-b border-gray-100 pb-3 dark:border-slate-800">
+                  <p className="font-semibold text-gray-950 dark:text-slate-100">
+                    {user?.name}
+                  </p>
+                  <p className="truncate text-sm text-gray-500 dark:text-slate-400">
                     {user?.email}
                   </p>
-                  <p className="mt-2 inline-flex rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-700">
+                  <p className="mt-2 inline-flex rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-700 dark:bg-blue-950/50 dark:text-blue-200">
                     {formatRole(user?.role)}
                   </p>
                 </div>
                 <div className="pt-2">
                   <Link
                     to={ROUTES.PROFILE}
-                    className="block rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100"
+                    className="block rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100 dark:text-slate-200 dark:hover:bg-slate-800"
                     onClick={() => setIsProfileOpen(false)}
                   >
                     View profile
                   </Link>
                   <button
                     type="button"
-                    className="mt-1 w-full rounded-md px-3 py-2 text-left text-sm font-medium text-red-600 transition hover:bg-red-50"
+                    className="mt-1 w-full rounded-md px-3 py-2 text-left text-sm font-medium text-red-600 transition hover:bg-red-50 dark:text-red-300 dark:hover:bg-red-950/40"
                     onClick={handleLogout}
                   >
                     Logout

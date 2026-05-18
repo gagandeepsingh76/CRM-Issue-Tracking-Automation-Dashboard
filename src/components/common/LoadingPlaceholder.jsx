@@ -8,16 +8,18 @@ const LoadingPlaceholder = ({ label }) => {
       aria-live="polite"
     >
       <div>
-        <div className="h-4 w-28 animate-pulse rounded bg-gray-200" />
-        <div className="mt-3 h-7 w-56 animate-pulse rounded bg-gray-200" />
-        <p className="mt-4 text-sm text-gray-500">{label}</p>
+        <div className="h-4 w-28 animate-pulse rounded bg-gray-200 dark:bg-slate-700" />
+        <div className="mt-3 h-7 w-56 animate-pulse rounded bg-gray-200 dark:bg-slate-700" />
+        <p className="mt-4 text-sm text-gray-500 dark:text-slate-400">
+          {label}
+        </p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[0, 1, 2, 3].map((item) => (
           <div
             key={item}
-            className="h-28 animate-pulse rounded-lg border border-gray-100 bg-gray-100"
+            className="h-28 animate-pulse rounded-lg border border-gray-100 bg-gray-100 dark:border-slate-800 dark:bg-slate-800"
           />
         ))}
       </div>

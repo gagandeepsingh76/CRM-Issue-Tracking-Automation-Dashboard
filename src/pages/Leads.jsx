@@ -202,12 +202,12 @@ const Leads = () => {
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search name, email, company, or source"
-            className="rounded-md border border-gray-300 px-3 py-2 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:ring-blue-900/40"
           />
           <select
             value={statusFilter}
             onChange={(event) => setStatusFilter(event.target.value)}
-            className="rounded-md border border-gray-300 px-3 py-2 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
           >
             <option value="">All statuses</option>
             {LEAD_STATUSES.map((status) => (
@@ -243,16 +243,16 @@ const Leads = () => {
             {leadItems.map((lead) => (
               <div
                 key={lead.id}
-                className="grid gap-3 rounded-md border border-gray-200 p-4 lg:grid-cols-[1.3fr_180px_180px_auto]"
+                className="grid gap-3 rounded-md border border-gray-200 p-4 dark:border-slate-800 dark:bg-slate-900/60 lg:grid-cols-[1.3fr_180px_180px_auto]"
               >
                 <div>
-                  <p className="font-semibold text-gray-950">
+                  <p className="font-semibold text-gray-950 dark:text-white">
                     {lead.firstName} {lead.lastName}
                   </p>
-                  <p className="mt-1 text-sm text-gray-500">
+                  <p className="mt-1 text-sm text-gray-500 dark:text-slate-400">
                     {lead.company ?? lead.email ?? "No company"}
                   </p>
-                  <p className="mt-2 text-sm text-gray-600">
+                  <p className="mt-2 text-sm text-gray-600 dark:text-slate-300">
                     {formatCurrency(lead.estimatedValue)} estimated value
                   </p>
                 </div>
@@ -261,7 +261,7 @@ const Leads = () => {
                   onChange={(event) =>
                     handleStatusChange(lead, event.target.value)
                   }
-                  className="h-10 rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="h-10 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
                 >
                   {LEAD_STATUSES.map((status) => (
                     <option key={status} value={status}>
@@ -274,7 +274,7 @@ const Leads = () => {
                   onChange={(event) =>
                     handleAssignmentChange(lead, event.target.value)
                   }
-                  className="h-10 rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="h-10 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
                 >
                   <option value="">Unassigned</option>
                   {users.map((user) => (
@@ -286,14 +286,14 @@ const Leads = () => {
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"
-                    className="h-10 rounded-md border border-gray-200 px-3 text-sm font-medium text-gray-700 transition hover:bg-gray-100"
+                    className="h-10 rounded-md border border-gray-200 px-3 text-sm font-medium text-gray-700 transition hover:bg-gray-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                     onClick={() => openEditModal(lead)}
                   >
                     Edit
                   </button>
                   <button
                     type="button"
-                    className="h-10 rounded-md border border-red-200 px-3 text-sm font-medium text-red-600 transition hover:bg-red-50"
+                    className="h-10 rounded-md border border-red-200 px-3 text-sm font-medium text-red-600 transition hover:bg-red-50 dark:border-red-900/70 dark:text-red-300 dark:hover:bg-red-950/40"
                     onClick={() => handleDelete(lead)}
                   >
                     Delete
@@ -308,64 +308,64 @@ const Leads = () => {
       {isModalOpen ? (
         <Modal title={editingLead ? "Edit lead" : "Create lead"} onClose={closeModal}>
           <form className="grid gap-4 sm:grid-cols-2" onSubmit={handleSubmit}>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               First name
               <input
                 required
                 name="firstName"
                 value={form.firstName}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               />
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Last name
               <input
                 required
                 name="lastName"
                 value={form.lastName}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               />
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Email
               <input
                 name="email"
                 type="email"
                 value={form.email}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               />
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Phone
               <input
                 name="phone"
                 value={form.phone}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               />
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Company
               <input
                 name="company"
                 value={form.company}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               />
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Source
               <input
                 name="source"
                 value={form.source}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               />
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Score
               <input
                 name="score"
@@ -374,10 +374,10 @@ const Leads = () => {
                 max="100"
                 value={form.score}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               />
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Estimated value
               <input
                 name="estimatedValue"
@@ -385,16 +385,16 @@ const Leads = () => {
                 min="0"
                 value={form.estimatedValue}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               />
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Status
               <select
                 name="status"
                 value={form.status}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               >
                 {LEAD_STATUSES.map((status) => (
                   <option key={status} value={status}>
@@ -403,13 +403,13 @@ const Leads = () => {
                 ))}
               </select>
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Owner
               <select
                 name="assignedToId"
                 value={form.assignedToId}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               >
                 <option value="">Assign to me</option>
                 {users.map((user) => (
@@ -422,7 +422,7 @@ const Leads = () => {
             <div className="flex justify-end gap-2 sm:col-span-2">
               <button
                 type="button"
-                className="rounded-md border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
+                className="rounded-md border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                 onClick={closeModal}
               >
                 Cancel

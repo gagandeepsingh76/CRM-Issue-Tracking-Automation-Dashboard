@@ -36,11 +36,11 @@ const Profile = () => {
             .toUpperCase()}
         </span>
         <div>
-          <p className="text-lg font-semibold text-gray-950">
+          <p className="text-lg font-semibold text-gray-950 dark:text-white">
             {user?.name}
           </p>
-          <p className="text-sm text-gray-500">{user?.email}</p>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="text-sm text-gray-500 dark:text-slate-400">{user?.email}</p>
+          <p className="mt-2 text-sm text-gray-600 dark:text-slate-300">
             This profile is refreshed from `/auth/me` when the app restores your
             session.
           </p>

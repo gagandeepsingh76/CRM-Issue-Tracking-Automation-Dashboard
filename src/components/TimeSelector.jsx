@@ -16,7 +16,7 @@ const TimeSelector = ({ onSelectTime }) => {
         <select
           value={selectedTime}
           onChange={(e) => handleTimeChange(e.target.value)}
-          className="py-2 px-4 rounded-lg bg-gray-200 w-full"
+          className="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:focus:border-blue-500 dark:focus:ring-blue-900/40"
         >
           {['1 Day', '1 Week', '1 Month', '1 Year'].map((time) => (
             <option key={time} value={time}>
@@ -31,7 +31,11 @@ const TimeSelector = ({ onSelectTime }) => {
         {['1 Day', '1 Week', '1 Month', '1 Year'].map((time) => (
           <button
             key={time}
-            className={`py-2 px-4 rounded-lg ${selectedTime === time ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}
+            className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
+              selectedTime === time
+                ? 'bg-blue-600 text-white'
+                : 'border border-gray-200 bg-gray-100 text-gray-700 hover:bg-gray-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800'
+            }`}
             onClick={() => handleTimeChange(time)}
           >
             {time}

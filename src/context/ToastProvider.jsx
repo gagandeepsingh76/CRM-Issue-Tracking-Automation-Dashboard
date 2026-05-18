@@ -5,9 +5,12 @@ import { ToastContext } from "./toastContext";
 const TOAST_TTL = 3500;
 
 const toastStyles = {
-  success: "border-emerald-200 bg-emerald-50 text-emerald-950",
-  error: "border-red-200 bg-red-50 text-red-950",
-  info: "border-blue-200 bg-blue-50 text-blue-950",
+  success:
+    "border-emerald-200 bg-emerald-50 text-emerald-950 dark:border-emerald-900/70 dark:bg-emerald-950 dark:text-emerald-100",
+  error:
+    "border-red-200 bg-red-50 text-red-950 dark:border-red-900/70 dark:bg-red-950 dark:text-red-100",
+  info:
+    "border-blue-200 bg-blue-50 text-blue-950 dark:border-blue-900/70 dark:bg-blue-950 dark:text-blue-100",
 };
 
 const ToastProvider = ({ children }) => {

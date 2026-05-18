@@ -83,9 +83,11 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+      <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h1 className="text-2xl font-bold">CRM Dashboard</h1>
+          <h1 className="text-2xl font-bold text-gray-950 dark:text-white">
+            CRM Dashboard
+          </h1>
           <TimeSelector onSelectTime={handleTimeSelect} />
         </div>
       </div>

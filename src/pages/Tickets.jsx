@@ -199,12 +199,12 @@ const Tickets = () => {
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search subject, description, requester, or email"
-            className="rounded-md border border-gray-300 px-3 py-2 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:ring-blue-900/40"
           />
           <select
             value={statusFilter}
             onChange={(event) => setStatusFilter(event.target.value)}
-            className="rounded-md border border-gray-300 px-3 py-2 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
           >
             <option value="">All statuses</option>
             {TICKET_STATUSES.map((status) => (
@@ -216,7 +216,7 @@ const Tickets = () => {
           <select
             value={priorityFilter}
             onChange={(event) => setPriorityFilter(event.target.value)}
-            className="rounded-md border border-gray-300 px-3 py-2 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            className="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
           >
             <option value="">All priorities</option>
             {PRIORITIES.map((priority) => (
@@ -252,14 +252,14 @@ const Tickets = () => {
             {ticketItems.map((ticket) => (
               <div
                 key={ticket.id}
-                className="grid gap-3 rounded-md border border-gray-200 p-4 lg:grid-cols-[1.4fr_160px_160px_auto]"
+                className="grid gap-3 rounded-md border border-gray-200 p-4 dark:border-slate-800 dark:bg-slate-900/60 lg:grid-cols-[1.4fr_160px_160px_auto]"
               >
                 <div>
-                  <p className="font-semibold text-gray-950">{ticket.subject}</p>
-                  <p className="mt-1 text-sm text-gray-500">
+                  <p className="font-semibold text-gray-950 dark:text-white">{ticket.subject}</p>
+                  <p className="mt-1 text-sm text-gray-500 dark:text-slate-400">
                     {ticket.customer?.name ?? ticket.requesterEmail ?? "No customer"}
                   </p>
-                  <p className="mt-2 line-clamp-2 text-sm text-gray-600">
+                  <p className="mt-2 line-clamp-2 text-sm text-gray-600 dark:text-slate-300">
                     {ticket.description}
                   </p>
                 </div>
@@ -268,7 +268,7 @@ const Tickets = () => {
                   onChange={(event) =>
                     handleStatusChange(ticket, event.target.value)
                   }
-                  className="h-10 rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="h-10 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
                 >
                   {TICKET_STATUSES.map((status) => (
                     <option key={status} value={status}>
@@ -281,7 +281,7 @@ const Tickets = () => {
                   onChange={(event) =>
                     handlePriorityChange(ticket, event.target.value)
                   }
-                  className="h-10 rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="h-10 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
                 >
                   {PRIORITIES.map((priority) => (
                     <option key={priority} value={priority}>
@@ -292,14 +292,14 @@ const Tickets = () => {
                 <div className="flex justify-end gap-2">
                   <button
                     type="button"
-                    className="h-10 rounded-md border border-gray-200 px-3 text-sm font-medium text-gray-700 transition hover:bg-gray-100"
+                    className="h-10 rounded-md border border-gray-200 px-3 text-sm font-medium text-gray-700 transition hover:bg-gray-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                     onClick={() => openEditModal(ticket)}
                   >
                     Edit
                   </button>
                   <button
                     type="button"
-                    className="h-10 rounded-md border border-red-200 px-3 text-sm font-medium text-red-600 transition hover:bg-red-50"
+                    className="h-10 rounded-md border border-red-200 px-3 text-sm font-medium text-red-600 transition hover:bg-red-50 dark:border-red-900/70 dark:text-red-300 dark:hover:bg-red-950/40"
                     onClick={() => handleDelete(ticket)}
                   >
                     Delete
@@ -317,17 +317,17 @@ const Tickets = () => {
           onClose={closeModal}
         >
           <form className="grid gap-4 sm:grid-cols-2" onSubmit={handleSubmit}>
-            <label className="text-sm font-medium text-gray-700 sm:col-span-2">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200 sm:col-span-2">
               Subject
               <input
                 required
                 name="subject"
                 value={form.subject}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               />
             </label>
-            <label className="text-sm font-medium text-gray-700 sm:col-span-2">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200 sm:col-span-2">
               Description
               <textarea
                 required
@@ -335,16 +335,16 @@ const Tickets = () => {
                 rows="4"
                 value={form.description}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               />
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Status
               <select
                 name="status"
                 value={form.status}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               >
                 {TICKET_STATUSES.map((status) => (
                   <option key={status} value={status}>
@@ -353,13 +353,13 @@ const Tickets = () => {
                 ))}
               </select>
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Priority
               <select
                 name="priority"
                 value={form.priority}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               >
                 {PRIORITIES.map((priority) => (
                   <option key={priority} value={priority}>
@@ -368,32 +368,32 @@ const Tickets = () => {
                 ))}
               </select>
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Requester name
               <input
                 name="requesterName"
                 value={form.requesterName}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               />
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Requester email
               <input
                 name="requesterEmail"
                 type="email"
                 value={form.requesterEmail}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               />
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Customer
               <select
                 name="customerId"
                 value={form.customerId}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               >
                 <option value="">No customer</option>
                 {customers.map((customer) => (
@@ -403,13 +403,13 @@ const Tickets = () => {
                 ))}
               </select>
             </label>
-            <label className="text-sm font-medium text-gray-700">
+            <label className="text-sm font-medium text-gray-700 dark:text-slate-200">
               Owner
               <select
                 name="assignedToId"
                 value={form.assignedToId}
                 onChange={handleFormChange}
-                className="mt-2 w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="mt-2 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:ring-blue-900/40"
               >
                 <option value="">Assign to me</option>
                 {users.map((user) => (
@@ -422,7 +422,7 @@ const Tickets = () => {
             <div className="flex justify-end gap-2 sm:col-span-2">
               <button
                 type="button"
-                className="rounded-md border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
+                className="rounded-md border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                 onClick={closeModal}
               >
                 Cancel

@@ -15,9 +15,9 @@ const Settings = () => {
     >
       <div className="space-y-4">
         {["Workspace", "Notifications", "Security"].map((section) => (
-          <div key={section} className="rounded-md border border-gray-200 p-4">
-            <p className="font-semibold text-gray-950">{section}</p>
-            <p className="mt-1 text-sm text-gray-500">
+          <div key={section} className="rounded-md border border-gray-200 p-4 dark:border-slate-800 dark:bg-slate-900/60">
+            <p className="font-semibold text-gray-950 dark:text-white">{section}</p>
+            <p className="mt-1 text-sm text-gray-500 dark:text-slate-400">
               Production configuration is managed through environment variables
               and deployment platform settings.
             </p>

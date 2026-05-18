@@ -5,6 +5,28 @@ import ModulePage from "../components/common/ModulePage";
 import { useCrmStore } from "../store/crmStore";
 import { formatCurrency, formatEnum, formatPercent } from "../utils/crmFormat";
 
+const BAR_HEIGHT_CLASS_BY_PERCENT = {
+  10: "h-[10%]",
+  20: "h-[20%]",
+  30: "h-[30%]",
+  40: "h-[40%]",
+  50: "h-[50%]",
+  60: "h-[60%]",
+  70: "h-[70%]",
+  80: "h-[80%]",
+  90: "h-[90%]",
+  100: "h-full",
+};
+
+const getBarHeightClass = (value, maxValue) => {
+  const numericValue = Number(value ?? 0);
+  const safeValue = Number.isFinite(numericValue) ? numericValue : 0;
+  const percentage = Math.max((safeValue / maxValue) * 100, 10);
+  const bucket = Math.min(Math.ceil(percentage / 10) * 10, 100);
+
+  return BAR_HEIGHT_CLASS_BY_PERCENT[bucket];
+};
+
 const Analytics = () => {
   const dashboard = useCrmStore((state) => state.dashboard);
   const pipelineAnalytics = useCrmStore((state) => state.pipelineAnalytics);
@@ -78,12 +100,9 @@ const Analytics = () => {
         <ErrorState message={error} onRetry={loadAnalytics} />
       ) : (
         <div className="space-y-6">
-          <div className="flex h-64 items-end gap-3 rounded-md bg-gray-50 p-4">
+          <div className="flex h-64 items-end gap-3 rounded-md bg-gray-50 p-4 dark:bg-slate-800">
             {pipeline.map((stage) => {
-              const height = Math.max(
-                (Number(stage.value ?? 0) / maxPipelineValue) * 100,
-                8,
-              );
+              const heightClass = getBarHeightClass(stage.value, maxPipelineValue);
 
               return (
                 <div
@@ -91,11 +110,10 @@ const Analytics = () => {
                   className="flex flex-1 flex-col items-center justify-end gap-2"
                 >
                   <div
-                    className="w-full rounded-t bg-blue-600"
-                    style={{ height: `${height}%` }}
+                    className={`w-full rounded-t bg-blue-600 ${heightClass}`}
                     title={`${formatEnum(stage.stage)} ${formatCurrency(stage.value)}`}
                   />
-                  <span className="text-center text-xs font-medium text-gray-500">
+                  <span className="text-center text-xs font-medium text-gray-500 dark:text-slate-300">
                     {formatEnum(stage.stage)}
                   </span>
                 </div>
@@ -107,12 +125,12 @@ const Analytics = () => {
             {(ticketAnalytics.data?.byPriority ?? []).map((priority) => (
               <div
                 key={priority.label}
-                className="rounded-md border border-gray-200 p-4"
+                className="rounded-md border border-gray-200 p-4 dark:border-slate-800 dark:bg-slate-900/60"
               >
-                <p className="text-sm font-medium text-gray-500">
+                <p className="text-sm font-medium text-gray-500 dark:text-slate-400">
                   {formatEnum(priority.label)}
                 </p>
-                <p className="mt-2 text-2xl font-bold text-gray-950">
+                <p className="mt-2 text-2xl font-bold text-gray-950 dark:text-white">
                   {priority.count}
                 </p>
               </div>

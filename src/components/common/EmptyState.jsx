@@ -3,8 +3,12 @@ import PropTypes from "prop-types";
 const EmptyState = ({ title, message, actionLabel, onAction }) => {
   return (
     <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 px-4 py-10 text-center dark:border-slate-700 dark:bg-slate-800">
-      <p className="text-base font-semibold text-gray-950">{title}</p>
-      <p className="mx-auto mt-2 max-w-md text-sm text-gray-600">{message}</p>
+      <p className="text-base font-semibold text-gray-950 dark:text-white">
+        {title}
+      </p>
+      <p className="mx-auto mt-2 max-w-md text-sm text-gray-600 dark:text-slate-300">
+        {message}
+      </p>
       {actionLabel && onAction ? (
         <button
           type="button"

@@ -13,15 +13,15 @@ const Modal = ({ title, children, onClose }) => {
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
-        className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white p-6 shadow-xl dark:bg-slate-900"
+        className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg border border-gray-200 bg-white p-6 shadow-xl dark:border-slate-700 dark:bg-slate-900"
       >
         <div className="mb-5 flex items-center justify-between gap-4">
-          <h2 id="modal-title" className="text-lg font-semibold text-gray-950">
+          <h2 id="modal-title" className="text-lg font-semibold text-gray-950 dark:text-white">
             {title}
           </h2>
           <button
             type="button"
-            className="rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 transition hover:bg-gray-100"
+            className="rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 transition hover:bg-gray-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
             onClick={onClose}
           >
             Close
