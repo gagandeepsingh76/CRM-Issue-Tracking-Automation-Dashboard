@@ -7,12 +7,6 @@ const normalizeSession = (session) => ({
   token: session.token,
 });
 
-const withoutRole = (payload) => {
-  const nextPayload = { ...payload };
-  delete nextPayload.role;
-  return nextPayload;
-};
-
 export const authService = {
   login: async ({ email, password }) => {
     const response = await httpClient.post(API_ENDPOINTS.auth.login, {
@@ -23,10 +17,7 @@ export const authService = {
   },
 
   register: async (payload) => {
-    const response = await httpClient.post(
-      API_ENDPOINTS.auth.register,
-      withoutRole(payload),
-    );
+    const response = await httpClient.post(API_ENDPOINTS.auth.register, payload);
     return normalizeSession(unwrapApiData(response));
   },
 
