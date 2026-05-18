@@ -1,4 +1,4 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend } from 'chart.js';
 
@@ -26,6 +26,10 @@ const LineChart = ({ data }) => {
       <Line data={lineData} />
     </div>
   );
+};
+
+LineChart.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default LineChart;

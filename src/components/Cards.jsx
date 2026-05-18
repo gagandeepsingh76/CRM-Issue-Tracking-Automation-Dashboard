@@ -1,4 +1,4 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 
 const Cards = ({ title, value }) => {
   return (
@@ -7,6 +7,11 @@ const Cards = ({ title, value }) => {
       <p className="text-2xl font-bold mt-2">{value}</p>
     </div>
   );
+};
+
+Cards.propTypes = {
+  title: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 };
 
 export default Cards;

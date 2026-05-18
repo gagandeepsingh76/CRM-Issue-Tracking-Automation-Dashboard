@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 const TimeSelector = ({ onSelectTime }) => {
   const [selectedTime, setSelectedTime] = useState('1 Week');
@@ -39,6 +40,10 @@ const TimeSelector = ({ onSelectTime }) => {
       </div>
     </div>
   );
+};
+
+TimeSelector.propTypes = {
+  onSelectTime: PropTypes.func.isRequired,
 };
 
 export default TimeSelector;

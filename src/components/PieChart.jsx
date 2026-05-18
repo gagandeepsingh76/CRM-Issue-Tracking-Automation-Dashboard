@@ -1,4 +1,4 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
@@ -23,6 +23,10 @@ const PieChart = ({ data }) => {
       <Pie data={pieData} />
     </div>
   );
+};
+
+PieChart.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default PieChart;
