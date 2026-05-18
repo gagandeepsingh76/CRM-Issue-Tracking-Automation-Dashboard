@@ -1,0 +1,38 @@
+{
+  "name": "crm-dashboard-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Production-style Express and Prisma backend for the CRM dashboard.",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "lint": "node --check src/server.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
+    "prisma:seed": "prisma db seed",
+    "prisma:studio": "prisma studio",
+    "db:reset": "prisma migrate reset"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.0.0",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "crm-dashboard": "file:..",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "prisma": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
