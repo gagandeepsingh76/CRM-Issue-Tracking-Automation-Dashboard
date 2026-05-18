@@ -7,11 +7,24 @@ const toNumber = (value, fallback) => {
   return Number.isFinite(parsed) ? parsed : fallback;
 };
 
-const splitList = (value) =>
-  (value ?? '')
+const requiredCorsOrigins = [
+  'https://crm-issue-tracking-automation-dashb.vercel.app',
+];
+
+const splitList = (value) => {
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item).trim()).filter(Boolean);
+  }
+
+  return String(value ?? '')
     .split(',')
     .map((item) => item.trim())
     .filter(Boolean);
+};
+
+const uniqueList = (items) => [...new Set(items)];
+
+const configuredCorsOrigins = splitList(process.env.CORS_ORIGIN);
 
 export const env = Object.freeze({
   nodeEnv: process.env.NODE_ENV ?? 'development',
@@ -22,7 +35,7 @@ export const env = Object.freeze({
     'local-development-secret-change-before-production',
   jwtExpiresIn: process.env.JWT_EXPIRES_IN ?? '7d',
   bcryptSaltRounds: toNumber(process.env.BCRYPT_SALT_ROUNDS, 12),
-  corsOrigins: splitList(process.env.CORS_ORIGIN),
+  corsOrigins: uniqueList([...requiredCorsOrigins, ...configuredCorsOrigins]),
   trustProxy: process.env.TRUST_PROXY === 'true',
   rateLimitWindowMs: toNumber(process.env.RATE_LIMIT_WINDOW_MS, 15 * 60 * 1000),
   rateLimitMax: toNumber(process.env.RATE_LIMIT_MAX, 300),
@@ -35,8 +48,4 @@ if (env.nodeEnv === 'production' && !process.env.JWT_SECRET) {
 
 if (env.nodeEnv === 'production' && !env.databaseUrl) {
   throw new Error('DATABASE_URL is required in production.');
-}
-
-if (env.nodeEnv === 'production' && env.corsOrigins.length === 0) {
-  throw new Error('CORS_ORIGIN is required in production.');
 }

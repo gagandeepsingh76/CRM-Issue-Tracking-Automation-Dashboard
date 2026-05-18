@@ -1,9 +1,10 @@
 import express from 'express';
 import compression from 'compression';
+import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
-import { corsMiddleware } from '../config/cors.js';
+import { corsOptions } from '../config/cors.js';
 import { env } from '../config/env.js';
 import { healthController } from '../controllers/healthController.js';
 import { apiRoutes } from '../routes/index.js';
@@ -25,7 +26,8 @@ app.use(
   }),
 );
 app.use(compression());
-app.use(corsMiddleware);
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 if (env.nodeEnv !== 'test') {
   app.use(morgan(env.nodeEnv === 'production' ? 'combined' : 'dev'));
 }
